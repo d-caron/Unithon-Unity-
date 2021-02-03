@@ -5,13 +5,13 @@ public class Deplacer : MonoBehaviour
 {
     private static float DELTA_POS = 0.01F;
 
-    public float x, y, z;
-    private Vector3 dest;
+    // public float x, y, z;
+    public Vector3 dest;
 
     // Start is called before the first frame update
     void Start()
     {
-        dest = new Vector3 (x, y, z);
+        dest = transform.position;
     }
 
     // Update is called once per frame
@@ -30,10 +30,10 @@ public class Deplacer : MonoBehaviour
         float dist_x = dest.x - transform.position.x;
         float dist_z = dest.z - transform.position.z;
 
-        transform.Translate (new Vector3 (
-            dist_x / Math.Abs (dist_x + dist_z),
+        transform.Translate (Vector3.Normalize (new Vector3 (
+            dist_x,
             0,
-            dist_z / Math.Abs (dist_x + dist_z)
-        ) * Time.deltaTime * 4);
+            dist_z
+        )) * Time.deltaTime * 3);
     }
 }
