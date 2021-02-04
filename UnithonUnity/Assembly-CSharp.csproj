@@ -45,8 +45,10 @@
      <Compile Include="Assets\polyperfect\Low Poly Animated People\- Scripts\Character Viewer\Polyperfect_CameraController.cs" />
      <Compile Include="Assets\polyperfect\Low Poly Animated People\- Scripts\Character Viewer\CharacterManager.cs" />
      <Compile Include="Assets\polyperfect\Common\Wander Script\Common_WanderManager.cs" />
+     <Compile Include="Assets\Scripts\Event_handler.cs" />
      <Compile Include="Assets\polyperfect\Low Poly Animated People\- Scripts\Wander Script\People_WanderManager.cs" />
      <Compile Include="Assets\polyperfect\Common\Common_KillSwitch.cs" />
+     <Compile Include="Assets\Scripts\Deplacer.cs" />
      <Compile Include="Assets\polyperfect\Low Poly Animated People\- Scripts\IK\HumanBoneOffset.cs" />
      <Compile Include="Assets\polyperfect\Low Poly Animated People\- Materials\Simple Water\SimpleWater.cs" />
      <Compile Include="Assets\polyperfect\Low Poly Animated People\- Scripts\Wander Script\People_AudioManager.cs" />
