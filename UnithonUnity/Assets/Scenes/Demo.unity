@@ -309,6 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1536335623}
   - component: {fileID: 1536335621}
+  - component: {fileID: 1536335622}
   m_Layer: 0
   m_Name: Comm
   m_TagString: Untagged
@@ -328,7 +329,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66838df9ac0b04a4985b32594b5075fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  port: 8000
+  IP: 127.0.0.1
+  port: 80
+--- !u!114 &1536335622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536335620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9300760acb7f54595dc7d74cba51ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  host: localhost
+  port: 80
+  message: Le bonjour
 --- !u!4 &1536335623
 Transform:
   m_ObjectHideFlags: 0
