@@ -12,7 +12,7 @@ public class Envoyer : MonoBehaviour
 {
     private TcpClient socketConnection;
     
-    public string ip;
+    public string host = "localhost";
     public int port;
     public string message;
 
@@ -26,7 +26,7 @@ public class Envoyer : MonoBehaviour
     {
         try
         {
-            socketConnection = new TcpClient (ip, port);
+            socketConnection = new TcpClient (host, port);
         }
         catch (Exception)
         {
