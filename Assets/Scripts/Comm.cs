@@ -64,7 +64,9 @@ public class Comm : MonoBehaviour
                 int length;
                 while ((length = stream.Read (bytes, 0, bytes.Length)) != 0)
                 {
-                    Debug.Log (Encoding.ASCII.GetString (bytes));
+                    byte[] receivedData = new byte[length];
+                    Array.Copy(bytes, 0, receivedData, 0, length);
+                    Debug.Log (Encoding.ASCII.GetString (receivedData));
                 }
             }
         }
