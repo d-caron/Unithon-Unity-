@@ -59,6 +59,38 @@
           return strReceiveUDP;
        }
 
+       private void Update(){
+         if ( strReceiveUDP == "haut") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (4, 0, 4);
+         }
+
+         
+         if ( strReceiveUDP == "droite") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (12, 0, 0);
+         }
+
+         
+         if ( strReceiveUDP == "bas") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (4, 0, -4);
+         }
+
+         
+         if ( strReceiveUDP == "gauche") {
+            GameObject.Find ("Michel").transform.LookAt(new Vector3 (0, 0, 0));
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (0, 0, 0);
+         }
+
+         if ( strReceiveUDP == "Ugo") {
+            GameObject.Find ("Corentin").transform.LookAt(GameObject.Find ("Ugo").transform.position);
+            Deplacer deplacement = GameObject.Find ("Corentin").GetComponent<Deplacer> ();
+            deplacement.dest = GameObject.Find ("Ugo").transform.position;
+         }
+       }
+
        void OnDisable()
        {
           if ( receiveThread!= null)   receiveThread.Abort();
