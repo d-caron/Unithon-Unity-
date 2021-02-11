@@ -16,13 +16,13 @@ public class Event_handler : MonoBehaviour
         // Up position
         if (Input.GetKeyDown (KeyCode.UpArrow)) {
             Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (4, 0, 4);
+            deplacement.dest = GameObject.Find ("Ugo").transform.position;
         }
 
         // Right position
         if (Input.GetKeyDown (KeyCode.RightArrow)) {
             Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (12, 0, 0);
+            deplacement.dest = new Vector3 (11, 0, 0);
         }
 
         // Down position

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Deplacer : MonoBehaviour
 {
-    private static float DELTA_POS = 0.8F;
+    private static float DELTA_POS = 1.0F;
     public Animator animator;
 
     // public float x, y, z;
@@ -38,7 +38,7 @@ public class Deplacer : MonoBehaviour
         float dist_z = dest.z - transform.position.z;
 
         //regard vers la destination
-        //transform.LookAt(dest);
+        transform.LookAt(new Vector3(dest.x, transform.position.y, dest.z));
 
         Vector3 avancement = Vector3.Normalize (new Vector3 (dist_x, 0,dist_z)) * Time.deltaTime * 3;
         transform.position = transform.position + avancement;
