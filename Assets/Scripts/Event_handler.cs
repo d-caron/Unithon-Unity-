@@ -9,7 +9,6 @@ public class Event_handler : MonoBehaviour
     {
         
     }
-
     // Update is called once per frame
     void Update()
     {
