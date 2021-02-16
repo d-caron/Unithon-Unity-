@@ -23,7 +23,7 @@ public class Deplacer : MonoBehaviour
         if (Math.Abs (transform.position.x - dest.x) > DELTA_POS ||
             Math.Abs (transform.position.z - dest.z) > DELTA_POS)
         {
-            animator.Play("Walk");
+            animator.Play("Run");
             deplacer (dest);
         }
         else{
