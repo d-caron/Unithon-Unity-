@@ -58,7 +58,12 @@ public class Envoyer : MonoBehaviour
 
     public void CloseTCPClient()
     {
-        socketConnection.Close ();
-        Debug.Log ("Connexion closed !");
+        try {
+            socketConnection.Close ();
+            Debug.Log ("Connexion closed !");
+        }
+        catch(Exception) {
+
+        }
     }
 }

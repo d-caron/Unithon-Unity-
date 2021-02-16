@@ -19,6 +19,10 @@ public class Comm : MonoBehaviour
 
     private void Start ()
     {
+        ConnectAndStartThread();
+    }
+
+    private void ConnectAndStartThread() {
         ConnectToTCPServer ();
         listenThread = new Thread (new ThreadStart (ListenForData));
         listenThread.Start();
@@ -29,22 +33,28 @@ public class Comm : MonoBehaviour
         try
         {
             socketConnection = new TcpClient (host, port);
+            Debug.Log("Connexion à la socket réussie !");
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new Exception ("Server not running : " + e);
+            Debug.Log("Connexion impossible à la socket !");
         }
     }
 
     public void SendTCPMessage () {
         try
         {
-            NetworkStream stream = socketConnection.GetStream ();
-            if (stream.CanWrite)
-            {
-                byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);
-                stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
-                Debug.Log ("Ca marche !");
+            if (IsConnected()) {
+                NetworkStream stream = socketConnection.GetStream ();
+                if (stream.CanWrite)
+                {
+                    byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);
+                    stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
+                    Debug.Log ("Ca marche !");
+                }
+            } else {
+                Debug.Log("La socket est déconnecté, reconnexion en cours...");
+                ConnectAndStartThread();
             }
         }
         catch (Exception e)
@@ -79,33 +89,37 @@ public class Comm : MonoBehaviour
             using (NetworkStream stream = socketConnection.GetStream ())
             {
                 int length;
-                while ((length = stream.Read (bytes, 0, bytes.Length)) != 0)
+                while (((length = stream.Read (bytes, 0, bytes.Length)) != 0) && IsConnected())
                 {
                     byte[] receivedData = new byte[length];
                     Array.Copy(bytes, 0, receivedData, 0, length);
                     string msg = Encoding.ASCII.GetString (receivedData);
                     
-                    // Si on reçoit "Close_Python"
+                    // Si on reçoit "Close_Python" on ferme la socket
                     if (msg.Equals("Close_Python")) {
                         socketConnection.Close ();
                     } else {
                         Debug.Log (msg);
                     }
                 }
+                if(!IsConnected()) {
+                    Debug.Log("La socket est déconnecté");
+                }
             }
         }
         catch (Exception)
         {
-            Debug.Log ("Le serveur python a été perdu !");
-            socketConnection.Close ();
+            if(IsConnected()) {
+                Debug.Log ("Le serveur python a été perdu !");
+                socketConnection.Close ();
+            }
+            
         }
     }
 
    // Event appelé quand l'application se ferme
     private void OnApplicationQuit()
     {
-        // Envoie un message à Python pour indiquer que Unity se ferme
-        SendCloseMessage();
         CloseTCPClient ();
     }
 
@@ -113,13 +127,60 @@ public class Comm : MonoBehaviour
     // Fonction de fermeture de la socket
     public void CloseTCPClient()
     {
-        SendCloseMessage ();
-        Debug.Log("Envoie de message de fermeture à Python");
+        // Envoie un message à Python pour indiquer que Unity se ferme seulement si la connexion est toujours en cours
+        if(IsConnected()){
+            SendCloseMessage();
+            Debug.Log("Envoie de message de fermeture à Python");
+        }
+        
         try {
             socketConnection.Close ();
+            Debug.Log ("Connexion closed !");
         } catch {
             // Socket déjà fermé
         }
-        Debug.Log ("Connexion closed !");
+    }
+
+    // Fonction qui permet de savoir si la socket est toujours conencté ou non (trouvé sur : https://stackoverflow.com/questions/6993295/how-to-determine-if-the-tcp-is-connected-or-not)
+    public bool IsConnected ()
+    {
+        try
+        {
+            if (socketConnection != null && socketConnection.Client != null && socketConnection.Client.Connected)
+            {
+            /* pear to the documentation on Poll:
+                * When passing SelectMode.SelectRead as a parameter to the Poll method it will return 
+                * -either- true if Socket.Listen(Int32) has been called and a connection is pending;
+                * -or- true if data is available for reading; 
+                * -or- true if the connection has been closed, reset, or terminated; 
+                * otherwise, returns false
+                */
+
+                // Detect if client disconnected
+                if (socketConnection.Client.Poll(0, SelectMode.SelectRead))
+                {
+                    byte[] buff = new byte[1];
+                    if (socketConnection.Client.Receive(buff, SocketFlags.Peek) == 0)
+                    {
+                        // Client disconnected
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
