@@ -16,6 +16,7 @@ public class Comm : MonoBehaviour
     public string host = "localhost";
     public int port;
     public string message;
+    public string action;
 
     private void Start ()
     {
@@ -26,6 +27,10 @@ public class Comm : MonoBehaviour
         ConnectToTCPServer ();
         listenThread = new Thread (new ThreadStart (ListenForData));
         listenThread.Start();
+    }
+
+    private void Update (){
+        TraiterMessage();
     }
 
     private void ConnectToTCPServer ()
@@ -129,6 +134,37 @@ public class Comm : MonoBehaviour
     private void OnApplicationQuit()
     {
         CloseTCPClient ();
+    }
+
+    private void TraiterMessage(){
+        if ( action == "haut") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (4, 0, 4);
+        }
+
+        
+        if ( action == "droite") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (11, 0, 0);
+        }
+
+        
+        if ( action == "bas") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (4, 0, -4);
+        }
+
+        if ( action == "gauche") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (0, 0, 0);
+        }
+
+        if ( action == "Ugo") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = GameObject.Find ("Ugo").transform.position;
+        }
+
+        action = "";
     }
 
 
