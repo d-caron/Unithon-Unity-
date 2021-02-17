@@ -794,9 +794,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   host: localhost
-  port: 81
-  message: 
-  action: 
+  port: 1024
+  message: 1
 --- !u!1001 &2718352283439734575
 PrefabInstance:
   m_ObjectHideFlags: 0
