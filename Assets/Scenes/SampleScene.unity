@@ -789,7 +789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   host: localhost
   port: 1024
-  message: 
+  message: tesdt
 --- !u!1 &1761950646
 GameObject:
   m_ObjectHideFlags: 0

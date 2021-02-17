@@ -136,13 +136,7 @@ public class Comm : MonoBehaviour
         if(IsConnected()){
             SendCloseMessage();
             Debug.Log("Envoie de message de fermeture à Python");
-        }
-        
-        try {
             socketConnection.Close ();
-            Debug.Log ("Connexion closed !");
-        } catch {
-            // Socket déjà fermé
         }
     }
 
