@@ -103,7 +103,9 @@ public class Comm : MonoBehaviour
                     if (msg.Equals("Close_Python")) {
                         Debug.Log("La socket a été déconnecté");
                         socketConnection.Close ();
-                    } else {
+                    } 
+                    // Sinon c'est msg classique et on l'affiche
+                    else {
                         Debug.Log (msg);
                     }
                 }
@@ -112,6 +114,7 @@ public class Comm : MonoBehaviour
                 }
             }
         }
+        // Jamais tombé dedans
         catch (Exception)
         {
             if(IsConnected()) {
@@ -122,7 +125,7 @@ public class Comm : MonoBehaviour
         }
     }
 
-   // Event appelé quand l'application se fermes
+   // Event appelé quand l'application se ferme
     private void OnApplicationQuit()
     {
         CloseTCPClient ();
