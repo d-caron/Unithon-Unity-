@@ -16,12 +16,17 @@ public class Comm : MonoBehaviour
     public string host = "localhost";
     public int port;
     public string message;
+    public string action;
 
     private void Start ()
     {
         ConnectToTCPServer ();
         listenThread = new Thread (new ThreadStart (ListenForData));
         listenThread.Start();
+    }
+
+    private void Update (){
+        TraiterMessage();
     }
 
     private void ConnectToTCPServer ()
@@ -44,7 +49,6 @@ public class Comm : MonoBehaviour
             {
                 byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);
                 stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
-                Debug.Log ("Ca marche !");
             }
         }
         catch (Exception e)
@@ -66,7 +70,8 @@ public class Comm : MonoBehaviour
                 {
                     byte[] receivedData = new byte[length];
                     Array.Copy(bytes, 0, receivedData, 0, length);
-                    Debug.Log (Encoding.ASCII.GetString (receivedData));
+                    action = Encoding.ASCII.GetString (receivedData);
+                    Debug.Log (action);
                 }
             }
         }
@@ -74,6 +79,37 @@ public class Comm : MonoBehaviour
         {
             Debug.Log ("Exception : " + e);
         }
+    }
+
+    private void TraiterMessage(){
+        if ( action == "haut") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (4, 0, 4);
+        }
+
+        
+        if ( action == "droite") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (11, 0, 0);
+        }
+
+        
+        if ( action == "bas") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (4, 0, -4);
+        }
+
+        if ( action == "gauche") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = new Vector3 (0, 0, 0);
+        }
+
+        if ( action == "Ugo") {
+            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
+            deplacement.dest = GameObject.Find ("Ugo").transform.position;
+        }
+
+        action = "";
     }
 
     private void OnApplicationQuit()
