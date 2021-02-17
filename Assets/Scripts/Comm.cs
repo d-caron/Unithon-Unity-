@@ -52,7 +52,9 @@ public class Comm : MonoBehaviour
                     stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
                     Debug.Log ("Ca marche !");
                 }
-            } else {
+            } 
+            // Si on veut envoyer un message mais que la socket n'est pas connecté alors on essaye de se reconnecter à la socket
+            else {
                 Debug.Log("La socket est déconnecté, reconnexion en cours...");
                 ConnectAndStartThread();
             }
@@ -89,14 +91,17 @@ public class Comm : MonoBehaviour
             using (NetworkStream stream = socketConnection.GetStream ())
             {
                 int length;
+
+                // Si on est plus connecté à la socket alors on quitte la boucle
                 while (((length = stream.Read (bytes, 0, bytes.Length)) != 0) && IsConnected())
                 {
                     byte[] receivedData = new byte[length];
                     Array.Copy(bytes, 0, receivedData, 0, length);
                     string msg = Encoding.ASCII.GetString (receivedData);
                     
-                    // Si on reçoit "Close_Python" on ferme la socket
+                    // Si on reçoit "Close_Python" on ferme la sockets
                     if (msg.Equals("Close_Python")) {
+                        Debug.Log("La socket a été déconnecté");
                         socketConnection.Close ();
                     } else {
                         Debug.Log (msg);
@@ -117,7 +122,7 @@ public class Comm : MonoBehaviour
         }
     }
 
-   // Event appelé quand l'application se ferme
+   // Event appelé quand l'application se fermes
     private void OnApplicationQuit()
     {
         CloseTCPClient ();
@@ -141,7 +146,7 @@ public class Comm : MonoBehaviour
         }
     }
 
-    // Fonction qui permet de savoir si la socket est toujours conencté ou non (trouvé sur : https://stackoverflow.com/questions/6993295/how-to-determine-if-the-tcp-is-connected-or-not)
+    // Fonction qui permet de savoir si la socket est toujours connecté ou non (trouvé sur : https://stackoverflow.com/questions/6993295/how-to-determine-if-the-tcp-is-connected-or-not)
     public bool IsConnected ()
     {
         try
