@@ -9,9 +9,12 @@ public class Deplacer : MonoBehaviour
     // public float x, y, z;
     public Vector3 dest;
 
+    CharacterControl characterControl;
+
     // Start is called before the first frame update
     void Start()
     {
+        characterControl = gameObject.GetComponent<CharacterControl>();
         dest = transform.position;
     }
 
@@ -23,11 +26,18 @@ public class Deplacer : MonoBehaviour
         if (Math.Abs (transform.position.x - dest.x) > DELTA_POS ||
             Math.Abs (transform.position.z - dest.z) > DELTA_POS)
         {
+            if(!characterControl.GetIsOccupied()){
+                characterControl.IsOccupied();
+            }
             animator.Play("Run");
             deplacer (dest);
         }
         else{
+            if(characterControl.GetIsOccupied()){
+                characterControl.IsNotOccupied();
+            }
             animator.Play("Idle");
+
         }
     }
 
