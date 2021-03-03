@@ -9,6 +9,7 @@ public class Deplacer : MonoBehaviour
     // public float x, y, z;
     public Vector3 dest;
 
+    // Le CharacterControl permet de lui dire si le personnage est occupé ou non 
     CharacterControl characterControl;
 
     // Start is called before the first frame update
@@ -26,6 +27,7 @@ public class Deplacer : MonoBehaviour
         if (Math.Abs (transform.position.x - dest.x) > DELTA_POS ||
             Math.Abs (transform.position.z - dest.z) > DELTA_POS)
         {
+            // Si le personnage n'était pas occupé à la dernière itération alors il devient occupé sinon on ne fait rien car il est déjà
             if(!characterControl.GetIsOccupied()){
                 characterControl.IsOccupied();
             }
@@ -33,6 +35,7 @@ public class Deplacer : MonoBehaviour
             deplacer (dest);
         }
         else{
+            // Si le personnage était occupé à la dernière itération alors il ne devient plus occupé sinon on ne fait rien car il est déjà
             if(characterControl.GetIsOccupied()){
                 characterControl.IsNotOccupied();
             }
