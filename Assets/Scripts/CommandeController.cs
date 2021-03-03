@@ -15,14 +15,15 @@ public class CommandeController : MonoBehaviour
     {
         commands = new List<Commande>();
 
-        // Liste de commande en dur pour faire les tests
         newCommand(new Commande("Deplacer", new string[] {"Michel", "Up"}));
+        
         newCommand(new Commande("Deplacer", new string[] {"Michel", "Down"}));
-        newCommand(new Commande("Deplacer", new string[] {"Michel", "Right"}));
+
+        newCommand(new Commande("Deplacer", new string[] {"Ugo", "Up"}));
     }
 
     // Ajoute une nouvelle commande à la liste des commandes en attente
-    void newCommand(Commande cmd) {
+    public void newCommand(Commande cmd) {
         // On récupère l'id du personnage dont est destiné la commande (la première valeur du tableau d'ids de Commande)
         string id = cmd.ids[0];
 
@@ -34,12 +35,12 @@ public class CommandeController : MonoBehaviour
 
             // On regarde si le personnage est occupé
             if (!characterControl.GetIsOccupied()) {
-
+                
                 // S'il n'est pas occupé alors on regarde s'i 'il n'y pas déjà une commande en attente pour ce personnage
                 Commande cmdFromList = commands.Find(commands => commands.ids[0].Equals(id));
-
+                
                 // Si il y a une commande en attente alors on affecte la commande trouvée au personnage et passe la commande en paramètre dans la file d'attente
-                if (cmd != null) {
+                if (cmdFromList != null) {
                     GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
                     deleteCommand(cmd);
                     commands.Add(cmd);

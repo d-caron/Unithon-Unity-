@@ -39,8 +39,10 @@ public class CharacterControl : MonoBehaviour
     public void SetCommand(Commande cmd) {
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {
+            Debug.Log(cmd.ids[1]);
             Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();
             deplacement.dest = GameObject.Find ("Ugo").transform.position;
+            Debug.Log(transform.position + " - " + GameObject.Find("Michel").GetComponent<Deplacer>().dest + ", " + gameObject.name);
         }
 
         // Go to Right position
