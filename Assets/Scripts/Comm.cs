@@ -7,6 +7,7 @@ using System.Threading;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using JSONParser;
 
 public class Comm : MonoBehaviour
 {
@@ -92,18 +93,18 @@ public class Comm : MonoBehaviour
         try
         {
             byte[] bytes = new byte[2048];
-
+            
             using (NetworkStream stream = socketConnection.GetStream ())
             {
                 int length;
-
+               
                 // Si on est plus connecté à la socket alors on quitte la boucle
                 while (((length = stream.Read (bytes, 0, bytes.Length)) != 0) && IsConnected())
                 {
+                    
                     byte[] receivedData = new byte[length];
                     Array.Copy(bytes, 0, receivedData, 0, length);
                     string msg = Encoding.ASCII.GetString (receivedData);
-                    
                     // Si on reçoit "Close_Python" on ferme la sockets
                     if (msg.Equals("Close_Python")) {
                         Debug.Log("La socket a été déconnecté");
@@ -111,7 +112,10 @@ public class Comm : MonoBehaviour
                     } 
                     // Sinon c'est msg classique et on l'affiche
                     else {
-                        Debug.Log (msg);
+                        
+                        Debug.Log(msg);
+                        JSON.ParseJSON(msg);
+                        
                     }
                 }
                 if(!IsConnected()) {
