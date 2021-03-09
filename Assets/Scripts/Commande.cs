@@ -17,8 +17,8 @@ public class Commande
 
         id = System.Guid.NewGuid().ToString();
     }
-
-    public string ToString() {
+    
+    public override string ToString() {
         if(ids.Length > 0) {
             return "Nouvelle commande : " + command + " sur " + ids[0];
         }
