@@ -44,6 +44,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1325239060707356104}
   dest: {x: 0, y: 0, z: 0}
+--- !u!114 &2262859309265576600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325239060700068044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf275968026b8d44391951c9119fca0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1325239060707356104}
+  isTalking: 0
+  partner: {fileID: 0}
 --- !u!1001 &1325239060699878840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53,7 +68,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 191860, guid: 498a13929c1393e44be1126bcadc448b, type: 3}
       propertyPath: m_Name
-      value: Michel
+      value: Character
       objectReference: {fileID: 0}
     - target: {fileID: 421178, guid: 498a13929c1393e44be1126bcadc448b, type: 3}
       propertyPath: m_LocalRotation.w

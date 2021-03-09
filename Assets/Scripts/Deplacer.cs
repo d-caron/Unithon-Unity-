@@ -5,6 +5,7 @@ public class Deplacer : MonoBehaviour
 {
     private static float DELTA_POS = 1.0F;
     public Animator animator;
+    public bool isTalking;
 
     // public float x, y, z;
     public Vector3 dest;
@@ -13,6 +14,7 @@ public class Deplacer : MonoBehaviour
     void Start()
     {
         dest = transform.position;
+        isTalking = false;
     }
 
     // Update is called once per frame
@@ -20,14 +22,15 @@ public class Deplacer : MonoBehaviour
     {
         
         // On vérifie si on est au bon endroit sinon on se déplace
-        if (Math.Abs (transform.position.x - dest.x) > DELTA_POS ||
-            Math.Abs (transform.position.z - dest.z) > DELTA_POS)
+        if (!IsNextToMe(dest))
         {
             animator.Play("Run");
             deplacer (dest);
         }
         else{
-            animator.Play("Idle");
+            if(!isTalking){
+                animator.Play("Idle");
+            }
         }
     }
 
@@ -42,5 +45,10 @@ public class Deplacer : MonoBehaviour
 
         Vector3 avancement = Vector3.Normalize (new Vector3 (dist_x, 0,dist_z)) * Time.deltaTime * 3;
         transform.position = transform.position + avancement;
+    }
+
+    public bool IsNextToMe(Vector3 to){
+        return !((Math.Abs (transform.position.x - to.x) > DELTA_POS) ||
+        (Math.Abs (transform.position.z - to.z) > DELTA_POS));
     }
 }
