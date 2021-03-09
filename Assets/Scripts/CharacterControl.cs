@@ -24,13 +24,11 @@ public class CharacterControl : MonoBehaviour
     // Affecte true à isOccupied
     public void IsOccupied() {
         this.isOccupied = true;
-        Debug.Log("Is occupied !");
     }
 
     // Affecte false à isOccupied
     public void IsNotOccupied() {
         this.isOccupied = false;
-        Debug.Log("Is not occupied !");
 
         commandController.actionFree(gameObject.name);
     }
@@ -39,10 +37,8 @@ public class CharacterControl : MonoBehaviour
     public void SetCommand(Commande cmd) {
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {
-            Debug.Log(cmd.ids[1]);
             Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();
             deplacement.dest = GameObject.Find ("Ugo").transform.position;
-            Debug.Log(transform.position + " - " + GameObject.Find("Michel").GetComponent<Deplacer>().dest + ", " + gameObject.name);
         }
 
         // Go to Right position

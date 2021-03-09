@@ -17,4 +17,13 @@ public class Commande
 
         id = System.Guid.NewGuid().ToString();
     }
+
+    public string ToString() {
+        if(ids.Length > 0) {
+            return "Nouvelle commande : " + command + " sur " + ids[0];
+        }
+        else {
+            return "Nouvelle commande"+ " : " + command;        
+        }
+    }
 }

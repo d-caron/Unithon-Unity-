@@ -14,12 +14,6 @@ public class CommandeController : MonoBehaviour
     void Start()
     {
         commands = new List<Commande>();
-
-        newCommand(new Commande("Deplacer", new string[] {"Michel", "Up"}));
-        
-        newCommand(new Commande("Deplacer", new string[] {"Michel", "Down"}));
-
-        newCommand(new Commande("Deplacer", new string[] {"Ugo", "Up"}));
     }
 
     // Ajoute une nouvelle commande à la liste des commandes en attente
@@ -30,6 +24,7 @@ public class CommandeController : MonoBehaviour
         // On récupère le characterControl du personnage dont est destiné la commande
         CharacterControl characterControl = GameObject.Find(id).GetComponent<CharacterControl>();
 
+        Debug.Log(cmd.ToString());
         // On check si le characterControl a bien été trouvé
         if (characterControl != null) {
 
@@ -56,18 +51,19 @@ public class CommandeController : MonoBehaviour
                 commands.Add(cmd);
             }   
         }
+
+        
     }
 
     // Supprime une commande de la liste à partir de l'id d'une commande (unique générée aléatoirement avec GUID)
     void deleteCommand(Commande command) {
-        commands.RemoveAll(commands => commands.id == command.id);
+        commands.Remove(command);
     }
 
     // Appelé lorsqu'un personnage vient de terminer une action
     public void actionFree(string id) {
         // On regarde si il y a une commande en attente pour le personnage dont le nom est "id" (nom de l'objet)
         Commande cmd = commands.Find(commands => commands.ids[0].Equals(id));
-
         // Si on trouve une commande, on affecte alors au personnage cette commande (la première qui trouve dans la liste)
         if (cmd != null) {
             GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
