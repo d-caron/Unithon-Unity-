@@ -35,6 +35,9 @@ public class CharacterControl : MonoBehaviour
 
     // Pas censé être comme ça, version pour effectuer les tests en attente du DAO
     public void SetCommand(Commande cmd) {
+        // Lorsqu'on reçoit une nouvelle commande, on devient occupé
+        this.isOccupied = true;
+        
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {
             Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();

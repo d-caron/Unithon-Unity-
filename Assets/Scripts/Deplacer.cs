@@ -24,7 +24,6 @@ public class Deplacer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         // On vérifie si on est au bon endroit sinon on se déplace
         if (!IsNextToMe(dest))
         {

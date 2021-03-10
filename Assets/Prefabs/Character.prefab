@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1325239060707356104}
+  isTalking: 0
   dest: {x: 0, y: 0, z: 0}
 --- !u!114 &2262859309265576600
 MonoBehaviour:
@@ -57,8 +58,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1325239060707356104}
-  isTalking: 0
   partner: {fileID: 0}
+  isTalking: 0
+--- !u!114 &8961537378285920878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325239060700068044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255fc31e77e540442a02d2d61375127e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1325239060699878840
 PrefabInstance:
   m_ObjectHideFlags: 0

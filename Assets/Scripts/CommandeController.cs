@@ -63,7 +63,9 @@ public class CommandeController : MonoBehaviour
     // Appelé lorsqu'un personnage vient de terminer une action
     public void ActionFree(string id) {
         // On regarde si il y a une commande en attente pour le personnage dont le nom est "id" (nom de l'objet)
+        
         Commande cmd = commands.Find(commands => commands.ids[0].Equals(id));
+        Debug.Log(cmd);
         // Si on trouve une commande, on affecte alors au personnage cette commande (la première qui trouve dans la liste)
         if (cmd != null) {
             GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
