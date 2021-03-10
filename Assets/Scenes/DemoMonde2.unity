@@ -298,6 +298,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee6af68a3d2c1864ebc6cfc3be82d851, type: 3}
+--- !u!1 &243620623 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1325239060700068044, guid: 310e709432cd05e43a03fcee90196048, type: 3}
+  m_PrefabInstance: {fileID: 1064816384}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &423687484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -902,6 +907,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "M\xE9lanie"
       objectReference: {fileID: 0}
+    - target: {fileID: 2262859309265576600, guid: 310e709432cd05e43a03fcee90196048, type: 3}
+      propertyPath: partner
+      value: 
+      objectReference: {fileID: 243620623}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 310e709432cd05e43a03fcee90196048, type: 3}
 --- !u!1 &963194225
@@ -1050,6 +1059,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bob
       objectReference: {fileID: 0}
+    - target: {fileID: 2262859309265576600, guid: 310e709432cd05e43a03fcee90196048, type: 3}
+      propertyPath: partner
+      value: 
+      objectReference: {fileID: 1736271370}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 310e709432cd05e43a03fcee90196048, type: 3}
 --- !u!1001 &1120426684
@@ -1253,6 +1266,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee6af68a3d2c1864ebc6cfc3be82d851, type: 3}
+--- !u!1 &1736271370 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1325239060700068044, guid: 310e709432cd05e43a03fcee90196048, type: 3}
+  m_PrefabInstance: {fileID: 882313757}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1806131775
 PrefabInstance:
   m_ObjectHideFlags: 0
