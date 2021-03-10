@@ -24,8 +24,12 @@ public class Talk : MonoBehaviour
         if(partner != null){
             if (GetComponent<Deplacer>().IsNextToMe(partner.transform.position)){
                 if(discussionNotStarted){
+<<<<<<< HEAD
                     GetComponent<Deplacer>().dest = partner.transform.position;
                     isTalking = whoStartDiscussion();
+=======
+                    isTalking = WhoStartDiscussion();
+>>>>>>> d7f96492a5994cbc14b3864ca63129d7f14b4a77
                     discussionNotStarted = false;
                 }
                 GetComponent<Deplacer>().isTalking = true;
@@ -72,7 +76,7 @@ public class Talk : MonoBehaviour
         }
     }
 
-    public void endDiscussion(){
+    public void EndDiscussion(){
         partner.GetComponent<Deplacer>().isTalking = false;
         GetComponent<Deplacer>().isTalking = false;
         partner.GetComponent<Talk>().partner = null;
@@ -82,7 +86,7 @@ public class Talk : MonoBehaviour
         noTalk = true;
     }
 
-    private int whoStartDiscussion(){
+    private int WhoStartDiscussion(){
         if(string.Compare(partner.name, name)>0){
             return 0;
         }
