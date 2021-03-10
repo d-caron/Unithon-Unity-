@@ -28,8 +28,6 @@ public class Talk : MonoBehaviour
                     GetComponent<Deplacer>().dest = partner.transform.position;
                     isTalking = whoStartDiscussion();
 =======
-                    isTalking = WhoStartDiscussion();
->>>>>>> d7f96492a5994cbc14b3864ca63129d7f14b4a77
                     discussionNotStarted = false;
                 }
                 GetComponent<Deplacer>().isTalking = true;
