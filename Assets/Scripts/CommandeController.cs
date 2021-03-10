@@ -6,7 +6,7 @@ public class CommandeController : MonoBehaviour
 {
 
     // La liste des commandes en attente
-    List<Commande> commands;
+    public List<Commande> commands;
 
 
 
@@ -17,7 +17,7 @@ public class CommandeController : MonoBehaviour
     }
 
     // Ajoute une nouvelle commande à la liste des commandes en attente
-    public void newCommand(Commande cmd) {
+    public void NewCommand(Commande cmd) {
         // On récupère l'id du personnage dont est destiné la commande (la première valeur du tableau d'ids de Commande)
         string id = cmd.ids[0];
 
@@ -37,7 +37,7 @@ public class CommandeController : MonoBehaviour
                 // Si il y a une commande en attente alors on affecte la commande trouvée au personnage et passe la commande en paramètre dans la file d'attente
                 if (cmdFromList != null) {
                     GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
-                    deleteCommand(cmd);
+                    DeleteCommand(cmd);
                     commands.Add(cmd);
                 }
 
@@ -56,18 +56,18 @@ public class CommandeController : MonoBehaviour
     }
 
     // Supprime une commande de la liste à partir de l'id d'une commande (unique générée aléatoirement avec GUID)
-    void deleteCommand(Commande command) {
+    void DeleteCommand(Commande command) {
         commands.Remove(command);
     }
 
     // Appelé lorsqu'un personnage vient de terminer une action
-    public void actionFree(string id) {
+    public void ActionFree(string id) {
         // On regarde si il y a une commande en attente pour le personnage dont le nom est "id" (nom de l'objet)
         Commande cmd = commands.Find(commands => commands.ids[0].Equals(id));
         // Si on trouve une commande, on affecte alors au personnage cette commande (la première qui trouve dans la liste)
         if (cmd != null) {
             GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
-            deleteCommand(cmd);
+            DeleteCommand(cmd);
         }
     }
 }

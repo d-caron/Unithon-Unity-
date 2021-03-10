@@ -19,8 +19,8 @@ public class Commande
     }
     
     public override string ToString() {
-        if(ids.Length > 0) {
-            return "Nouvelle commande : " + command + " sur " + ids[0];
+        if(ids.Length == 2) {
+            return "Nouvelle commande : " + command + " sur " + ids[0] + " vers " + ids[1];
         }
         else {
             return "Nouvelle commande"+ " : " + command;        

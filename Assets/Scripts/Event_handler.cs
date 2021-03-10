@@ -17,22 +17,22 @@ public class Event_handler : MonoBehaviour
     {
         // [UP_ARROW] Go to Up position
         if (Input.GetKeyDown (KeyCode.UpArrow)) {
-            commandeControl.newCommand(new Commande("Deplacer", new string[] {"Michel", "Up"}));
+            commandeControl.NewCommand(new Commande("Deplacer", new string[] {"Michel", "Up"}));
         }
 
         // [RIGHT_ARROW] Go to Right position
         if (Input.GetKeyDown (KeyCode.RightArrow)) {
-            commandeControl.newCommand(new Commande("Deplacer", new string[] {"Michel", "Right"}));
+            commandeControl.NewCommand(new Commande("Deplacer", new string[] {"Michel", "Right"}));
         }
 
         // [DOWN_ARROW] Go to Down position
         if (Input.GetKeyDown (KeyCode.DownArrow)) {
-            commandeControl.newCommand(new Commande("Deplacer", new string[] {"Michel", "Down"}));
+            commandeControl.NewCommand(new Commande("Deplacer", new string[] {"Michel", "Down"}));
         }
 
         // [LEFT_ARROW] Go to Left position
         if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-            commandeControl.newCommand(new Commande("Deplacer", new string[] {"Michel", "Left"}));
+            commandeControl.NewCommand(new Commande("Deplacer", new string[] {"Michel", "Left"}));
         }
 
         // [SPACE] Send a message to Python

@@ -30,7 +30,7 @@ public class CharacterControl : MonoBehaviour
     public void IsNotOccupied() {
         this.isOccupied = false;
 
-        commandController.actionFree(gameObject.name);
+        commandController.ActionFree(gameObject.name);
     }
 
     // Pas censé être comme ça, version pour effectuer les tests en attente du DAO
