@@ -24,6 +24,7 @@ public class Talk : MonoBehaviour
         if(partner != null){
             if (GetComponent<Deplacer>().IsNextToMe(partner.transform.position)){
                 if(discussionNotStarted){
+                    GetComponent<Deplacer>().dest = partner.transform.position;
                     isTalking = whoStartDiscussion();
                     discussionNotStarted = false;
                 }
