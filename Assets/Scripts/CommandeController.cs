@@ -37,10 +37,12 @@ public class CommandeController : MonoBehaviour
                 
                 // Si il y a une commande en attente alors on affecte la commande trouvée au personnage et passe la commande en paramètre dans la file d'attente
                 if (cmdFromList != null) {
-                    uIController.SetNewLineLog(cmd.GetLogQueue());
                     GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
                     DeleteCommand(cmd);
                     commands.Add(cmd);
+
+                    // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne
+                    uIController.SetNewLineLog("<color=#FF0000>" + cmd.GetLogQueue() + "</color>");
                 }
 
                 // Si il n'y a pas de commande en attente alors on affecte cette nouvelle commande au personnage
@@ -50,8 +52,8 @@ public class CommandeController : MonoBehaviour
             }
             // Sinon elle passe en file d'attente
             else {
-                // Ajoute une ligne dans le log
-                uIController.SetNewLineLog(cmd.GetLogQueue());
+                // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne
+                uIController.SetNewLineLog("<color=#FF0000>" + cmd.GetLogQueue() + "</color>");
                 
                 commands.Add(cmd);
             }   

@@ -42,8 +42,8 @@ public class CharacterControl : MonoBehaviour
         // Lorsqu'on reçoit une nouvelle commande, on devient occupé
         this.isOccupied = true;
         
-        // Ajoute une ligne dans le log
-        uIController.SetNewLineLog(cmd.GetLogExecute());
+        // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne
+        uIController.SetNewLineLog("<color=#00c90e>" + cmd.GetLogExecute() + "</color>");
 
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {
