@@ -26,4 +26,33 @@ public class Commande
             return "Nouvelle commande"+ " : " + command;        
         }
     }
+
+    public string GetLogQueue() {
+        string text = "Commande " + command + " mise en la file d'attente de " + ids[0];
+        text += GetParam();
+        return text;
+    }
+
+    public string GetLogExecute() {
+        string text = "Commande " + command + " exécutée par " + ids[0];
+        text += GetParam();
+        return text;
+    }
+
+    public string GetLogFinish() {
+        string text = "Commande " + command + " terminée par " + ids[0];
+        text += GetParam();
+        return text;
+    }
+
+    public string GetParam() {
+        string text = "";
+        if (ids.Length > 1) {
+            text += ", param : ";
+            for(int i = 1; i < ids.Length; i++) {
+                text += ids[i] + " ";
+            }
+        }
+        return text;
+    }
 }

@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CommandeController : MonoBehaviour
 {
 
     // La liste des commandes en attente
     public List<Commande> commands;
-
-
+    private UIController uIController;
 
 
     void Start()
     {
         commands = new List<Commande>();
+        uIController = GameObject.Find("GameController").GetComponent<UIController>();
     }
 
     // Ajoute une nouvelle commande à la liste des commandes en attente
@@ -36,6 +37,7 @@ public class CommandeController : MonoBehaviour
                 
                 // Si il y a une commande en attente alors on affecte la commande trouvée au personnage et passe la commande en paramètre dans la file d'attente
                 if (cmdFromList != null) {
+                    uIController.SetNewLineLog(cmd.GetLogQueue());
                     GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
                     DeleteCommand(cmd);
                     commands.Add(cmd);
@@ -46,8 +48,11 @@ public class CommandeController : MonoBehaviour
                     characterControl.SetCommand(cmd);
                 }
             }
+            // Sinon elle passe en file d'attente
             else {
-                // Sinon elle passe en file d'attente
+                // Ajoute une ligne dans le log
+                uIController.SetNewLineLog(cmd.GetLogQueue());
+                
                 commands.Add(cmd);
             }   
         }

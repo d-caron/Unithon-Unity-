@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CharacterControl : MonoBehaviour
 {
@@ -9,11 +10,14 @@ public class CharacterControl : MonoBehaviour
 
     // Permet de savoir si le personnage est occupé ou non
     private bool isOccupied = false;
+    private UIController uIController;
 
     void Start()
     {
         // On récupère le commandController qui permet de faire une files d'attentes
         commandController = GameObject.Find("GameController").GetComponent<CommandeController>();
+
+        uIController = GameObject.Find("GameController").GetComponent<UIController>();
     }
 
     // Renvoie le boolean indiquant si oui ou non le personnage est occupé
@@ -38,6 +42,9 @@ public class CharacterControl : MonoBehaviour
         // Lorsqu'on reçoit une nouvelle commande, on devient occupé
         this.isOccupied = true;
         
+        // Ajoute une ligne dans le log
+        uIController.SetNewLineLog(cmd.GetLogExecute());
+
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {
             Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();
