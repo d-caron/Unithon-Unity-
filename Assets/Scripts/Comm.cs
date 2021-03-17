@@ -7,6 +7,8 @@ using System.Threading;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using JSONParser;
+using static DAO;
 
 public class Comm : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class Comm : MonoBehaviour
     public int port;
     public string message;
     public string action;
+    public GameObject[] characters;
 
     private void Start ()
     {
@@ -38,6 +41,7 @@ public class Comm : MonoBehaviour
         try
         {
             socketConnection = new TcpClient (host, port);
+            characters=GameObject.FindGameObjectsWithTag("character");
             Debug.Log("Connexion à la socket réussie !");
         }
         catch (Exception)
@@ -53,7 +57,7 @@ public class Comm : MonoBehaviour
                 NetworkStream stream = socketConnection.GetStream ();
                 if (stream.CanWrite)
                 {
-                    byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);
+                    byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);//envoyer cette liste à unity
                     stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
                     Debug.Log ("Ca marche !");
                 }
@@ -92,18 +96,18 @@ public class Comm : MonoBehaviour
         try
         {
             byte[] bytes = new byte[2048];
-
+            
             using (NetworkStream stream = socketConnection.GetStream ())
             {
                 int length;
-
+               
                 // Si on est plus connecté à la socket alors on quitte la boucle
                 while (((length = stream.Read (bytes, 0, bytes.Length)) != 0) && IsConnected())
                 {
+                    
                     byte[] receivedData = new byte[length];
                     Array.Copy(bytes, 0, receivedData, 0, length);
                     string msg = Encoding.ASCII.GetString (receivedData);
-                    
                     // Si on reçoit "Close_Python" on ferme la sockets
                     if (msg.Equals("Close_Python")) {
                         Debug.Log("La socket a été déconnecté");
@@ -111,7 +115,19 @@ public class Comm : MonoBehaviour
                     } 
                     // Sinon c'est msg classique et on l'affiche
                     else {
-                        Debug.Log (msg);
+                        
+                        
+                        try{
+                            //Debug.Log(msg);
+                            JSONParser.ParseJSON(msg);
+                            
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.Log ("Exception : " + e);
+                        }
+                       
+                        
                     }
                 }
                 if(!IsConnected()) {
@@ -138,8 +154,11 @@ public class Comm : MonoBehaviour
 
     private void TraiterMessage(){
         if ( action == "haut") {
-            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (4, 0, 4);
+            string[] ids = {"Michel","Ugo"};
+           
+            
+            Deplacer deplacement = GameObject.Find(ids[0]).GetComponent<Deplacer> ();
+            deplacement.dest = GameObject.Find(ids[1]).transform.position;
         }
 
         
