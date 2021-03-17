@@ -637,9 +637,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ugo
       objectReference: {fileID: 0}
+    - target: {fileID: 2262859309265576600, guid: 310e709432cd05e43a03fcee90196048, type: 3}
+      propertyPath: partner
+      value: 
+      objectReference: {fileID: 1222609226}
     - target: {fileID: 5192450766637695079, guid: 310e709432cd05e43a03fcee90196048, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 310e709432cd05e43a03fcee90196048, type: 3}
@@ -710,9 +714,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Michel
       objectReference: {fileID: 0}
+    - target: {fileID: 2262859309265576600, guid: 310e709432cd05e43a03fcee90196048, type: 3}
+      propertyPath: partner
+      value: 
+      objectReference: {fileID: 523366946}
     - target: {fileID: 5192450766637695079, guid: 310e709432cd05e43a03fcee90196048, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 310e709432cd05e43a03fcee90196048, type: 3}

@@ -37,23 +37,21 @@ public class SwapCamera : MonoBehaviour
         
 
         if(globalActivated){
-            tabCamIA[selectedIA].SetActive(false);
+            tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
             mainCam.SetActive(true);
-            transform.position = positionGlobal;
-            transform.rotation = Quaternion.Euler(rotationGlobal);
         }
         else{
-            tabCamIA[selectedIA].SetActive(true);
+            tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
             mainCam.SetActive(false);
             if(Input.GetAxis("Mouse ScrollWheel")<0){
-                tabCamIA[selectedIA].SetActive(false);
-                selectedIA = Mathf.Abs(selectedIA - 1) % tabCamIA.Length;
-                tabCamIA[selectedIA].SetActive(true);
+                tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
+                selectedIA--;
+                tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
             }
             if(Input.GetAxis("Mouse ScrollWheel")>0){
-                tabCamIA[selectedIA].SetActive(false);
-                selectedIA = Mathf.Abs(selectedIA + 1) % tabCamIA.Length;
-                tabCamIA[selectedIA].SetActive(true);
+                tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
+                selectedIA++;
+                tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
             }
         }
         
