@@ -38,8 +38,8 @@ public class CharacterControl : MonoBehaviour
     public void IsNotOccupied() {
         this.isOccupied = false;
 
-        // Lorsqu'on a fini une commande, on ajoute une ligne dans le log en vert
-        uIController.SetNewLineLog("<color=#00c90e>" + command.GetLogFinish() + "</color>");
+        // Lorsqu'on a fini une commande on ajoute une ligne dans le log en vert
+        uIController.SetNewLineLog(command.GetLogFinish());
 
         // On affecte null à la commande car elle vient d'être terminée
         this.command = null;
@@ -57,8 +57,8 @@ public class CharacterControl : MonoBehaviour
         // On affecte la nouvelle commande
         this.command = cmd;
 
-        // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne (ici bleu)
-        uIController.SetNewLineLog("<color=#3458eb>" + cmd.GetLogExecute() + "</color>");
+        // Ajoute une ligne dans le log
+        uIController.SetNewLineLog(cmd.GetLogExecute());
 
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {

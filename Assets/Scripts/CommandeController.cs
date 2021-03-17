@@ -42,7 +42,7 @@ public class CommandeController : MonoBehaviour
                     commands.Add(cmd);
 
                     // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne
-                    uIController.SetNewLineLog("<color=#FF0000>" + cmd.GetLogQueue() + "</color>");
+                    uIController.SetNewLineLog(cmd.GetLogQueue());
                 }
 
                 // Si il n'y a pas de commande en attente alors on affecte cette nouvelle commande au personnage
@@ -53,7 +53,7 @@ public class CommandeController : MonoBehaviour
             // Sinon elle passe en file d'attente
             else {
                 // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne
-                uIController.SetNewLineLog("<color=#FF0000>" + cmd.GetLogQueue() + "</color>");
+                uIController.SetNewLineLog(cmd.GetLogQueue());
                 
                 commands.Add(cmd);
             }   

@@ -35,6 +35,8 @@ public class UIController : MonoBehaviour
     // Méthode permettant d'actualiser l'affichage du log
     private void UpdateLog() {
         string text = "";
+
+        // Parcours chaque string de logTexts pour l'ajouter au log avec un \n pour sauter une ligne
         foreach(string l in logTexts) {
             text += l + "\n";
         }
