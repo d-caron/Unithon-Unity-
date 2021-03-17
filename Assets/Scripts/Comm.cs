@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using JSONParser;
+using static DAO;
 
 public class Comm : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Comm : MonoBehaviour
     public int port;
     public string message;
     public string action;
+    public GameObject[] characters;
 
     private void Start ()
     {
@@ -39,6 +41,7 @@ public class Comm : MonoBehaviour
         try
         {
             socketConnection = new TcpClient (host, port);
+            characters=GameObject.FindGameObjectsWithTag("character");
             Debug.Log("Connexion à la socket réussie !");
         }
         catch (Exception)
@@ -54,7 +57,7 @@ public class Comm : MonoBehaviour
                 NetworkStream stream = socketConnection.GetStream ();
                 if (stream.CanWrite)
                 {
-                    byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);
+                    byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);//envoyer cette liste à unity
                     stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
                     Debug.Log ("Ca marche !");
                 }
@@ -113,8 +116,17 @@ public class Comm : MonoBehaviour
                     // Sinon c'est msg classique et on l'affiche
                     else {
                         
-                        Debug.Log(msg);
-                        JSON.ParseJSON(msg);
+                        
+                        try{
+                            //Debug.Log(msg);
+                            JSONParser.ParseJSON(msg);
+                            
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.Log ("Exception : " + e);
+                        }
+                       
                         
                     }
                 }
@@ -142,8 +154,11 @@ public class Comm : MonoBehaviour
 
     private void TraiterMessage(){
         if ( action == "haut") {
-            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (4, 0, 4);
+            string[] ids = {"Michel","Ugo"};
+           
+            
+            Deplacer deplacement = GameObject.Find(ids[0]).GetComponent<Deplacer> ();
+            deplacement.dest = GameObject.Find(ids[1]).transform.position;
         }
 
         
