@@ -25,8 +25,8 @@ public class UIController : MonoBehaviour
         if(logTexts.Count >= 5) {
             logTexts.RemoveAt(0);
         }
-        // On ajoute la nouvelle ligne dans la liste, la balise color permet de donner une couleur à la ligne
-        logTexts.Add("<color=#FF0000>" +  line + "</color>");
+        // On ajoute la nouvelle ligne dans la liste
+        logTexts.Add(line);
 
         // On met à jour l'affichage du log
         UpdateLog();

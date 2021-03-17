@@ -12,11 +12,15 @@ public class CharacterControl : MonoBehaviour
     private bool isOccupied = false;
     private UIController uIController;
 
+    // Commande actuelle du personnage
+    private Commande command;
+
     void Start()
     {
         // On récupère le commandController qui permet de faire une files d'attentes
         commandController = GameObject.Find("GameController").GetComponent<CommandeController>();
 
+        // On récupère l'uiController qui permet d'envoyer les notifications aux log
         uIController = GameObject.Find("GameController").GetComponent<UIController>();
     }
 
@@ -34,7 +38,15 @@ public class CharacterControl : MonoBehaviour
     public void IsNotOccupied() {
         this.isOccupied = false;
 
+        // Lorsqu'on a fini une commande, on ajoute une ligne dans le log en vert
+        uIController.SetNewLineLog("<color=#00c90e>" + command.GetLogFinish() + "</color>");
+
+        // On affecte null à la commande car elle vient d'être terminée
+        this.command = null;
+
+        // Dit au commande controller qu'il est en attente d'une nouvelle commande
         commandController.ActionFree(gameObject.name);
+
     }
 
     // Pas censé être comme ça, version pour effectuer les tests en attente du DAO
@@ -42,8 +54,11 @@ public class CharacterControl : MonoBehaviour
         // Lorsqu'on reçoit une nouvelle commande, on devient occupé
         this.isOccupied = true;
         
-        // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne
-        uIController.SetNewLineLog("<color=#00c90e>" + cmd.GetLogExecute() + "</color>");
+        // On affecte la nouvelle commande
+        this.command = cmd;
+
+        // Ajoute une ligne dans le log, la balise color permet de donner une couleur à la ligne (ici bleu)
+        uIController.SetNewLineLog("<color=#3458eb>" + cmd.GetLogExecute() + "</color>");
 
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {
