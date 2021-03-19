@@ -21,10 +21,9 @@ namespace Msg_manager
                     switch (dao.action){
                         
                         case "deplacer":
-                            if(dao.world.id == ""){
+                            if(dao.world.regions.Length == 0){
                                 Deplacer deplacement = GameObject.Find(dao.characters[0]).GetComponent<Deplacer> ();
                                 deplacement.dest = GameObject.Find(dao.characters[1]).transform.position;
-                                Debug.Log ("On se déplace !!");
                             }else{
                                 Deplacer deplacement = GameObject.Find(dao.characters[0]).GetComponent<Deplacer> ();
                                 deplacement.dest = GameObject.Find(dao.world.regions[0]).transform.position;
