@@ -21,6 +21,7 @@ public class Comm : MonoBehaviour
     private string msg_to_recv = "";
     public string action;
     public GameObject[] characters;
+    public GameObject[] regions; 
 
     private void Start ()
     {
@@ -45,7 +46,28 @@ public class Comm : MonoBehaviour
         try
         {
             socketConnection = new TcpClient (host, port);
-            //characters=GameObject.FindGameObjectsWithTag("character");
+
+            DAO dao = new DAO ();
+            dao.type = "info";
+            dao.action = "add_characters";
+            characters = GameObject.FindGameObjectsWithTag("character");
+            dao.characters = new String[characters.Length];
+            for (int i = 0; i < characters.Length; i ++) {
+                dao.characters[i] = characters[i].name;
+            }
+            msg_to_send = dao.Serialize ();
+            SendTCPMessage ();
+
+            dao.action = "add_regions";
+            regions = GameObject.FindGameObjectsWithTag("region");
+            dao.world = new S_World ();
+            dao.world.regions = new String[regions.Length];
+            for (int i = 0; i < regions.Length; i ++) {
+                dao.world.regions[i] = regions[i].name;
+            }
+            msg_to_send = dao.Serialize ();
+            SendTCPMessage ();
+
             Debug.Log("Connexion à la socket réussie !");
         }
         catch (Exception)
