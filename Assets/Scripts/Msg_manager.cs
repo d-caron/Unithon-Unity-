@@ -47,16 +47,7 @@ namespace Msg_manager
                         case "exit":
                             Application.Quit ();
                             UnityEditor.EditorApplication.isPlaying = false;
-                            break;
-                        
-                        case "reset":
-                            Scene scene = SceneManager.GetActiveScene(); 
-                            SceneManager.LoadScene(scene.name);
-                            break;
-                        
-                        case "load":
-                            SceneManager.LoadScene(dao.world.id);  
-                            break;                          
+                            break;                      
 
                         default:
                             Debug.Log("Commande système non reconnue");   
