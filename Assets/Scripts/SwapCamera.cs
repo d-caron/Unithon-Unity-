@@ -10,7 +10,7 @@ public class SwapCamera : MonoBehaviour
     private GameObject[] tabCamIA;
     public int selectedIA;
     public bool globalActivated;
-    // Start is called before the first frame update
+
     void Start()
     {
         //On commence en position globale
@@ -28,26 +28,30 @@ public class SwapCamera : MonoBehaviour
         selectedIA = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //cliquer sur la molette pour changer entre TPS et global
         if(Input.GetMouseButtonDown(2)){
             globalActivated = !globalActivated;
         }
         
-
+        //cam global
         if(globalActivated){
             tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
             mainCam.SetActive(true);
         }
+
+        //cam TPS
         else{
             tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
             mainCam.SetActive(false);
+            //changer vers l'IA précédente
             if(Input.GetAxis("Mouse ScrollWheel")<0){
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
                 selectedIA--;
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
             }
+            //changer vers l'IA suivante
             if(Input.GetAxis("Mouse ScrollWheel")>0){
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
                 selectedIA++;
