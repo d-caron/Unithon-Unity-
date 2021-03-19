@@ -11,6 +11,10 @@ public class SwapCamera : MonoBehaviour
     public int selectedIA;
     public bool globalActivated;
 
+    /*
+    * @do : Initialise la caméra sur la globale et désactive celles des IAs
+    * @return void
+    */
     void Start()
     {
         //On commence en position globale
@@ -28,6 +32,10 @@ public class SwapCamera : MonoBehaviour
         selectedIA = 0;
     }
 
+    /*
+    * @do : Positionne la caméra à l'endroit voulu par l'utilisateur
+    * @return void
+    */
     void Update()
     {
         //cliquer sur la molette pour changer entre TPS et global
@@ -37,8 +45,15 @@ public class SwapCamera : MonoBehaviour
         
         //cam global
         if(globalActivated){
-            tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
-            mainCam.SetActive(true);
+            if(Input.GetAxis("Mouse ScrollWheel")==0){
+                tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
+                mainCam.SetActive(true);
+            }
+            else{
+                globalActivated = !globalActivated;
+                tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
+                mainCam.SetActive(false);
+            }
         }
 
         //cam TPS
@@ -47,6 +62,7 @@ public class SwapCamera : MonoBehaviour
             mainCam.SetActive(false);
             //changer vers l'IA précédente
             if(Input.GetAxis("Mouse ScrollWheel")<0){
+                mainCam.SetActive(false);
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
                 selectedIA--;
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
@@ -58,6 +74,8 @@ public class SwapCamera : MonoBehaviour
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
             }
         }
+
+        
         
     }
 }
