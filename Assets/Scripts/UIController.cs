@@ -9,43 +9,51 @@ public class UIController : MonoBehaviour
     private TextMeshProUGUI log;
 
     // La liste qui contient maximum 5 log 
-    private List<string> logTexts;
+    private List<Commande> logCommands;
 
     void Start()
     {
         // Récupération de l'objet log
         log = FindObjectOfType<TextMeshProUGUI>();
 
-        logTexts = new List<string>();
+        logCommands = new List<Commande>();
     }
 
     // Méthode public permettant de rajouter une ligne dans le log
-    public void SetNewLineLog (string line) {
+    public void SetNewLineLog (Commande cmd) {
         // Si le nombre de ligne est supérieur à 5 alors on supprime la première valeur
-        if(logTexts.Count >= 5) {
-            logTexts.RemoveAt(0);
+        if(logCommands.Count >= 5) {
+            logCommands.RemoveAt(0);
         }
-        // On ajoute la nouvelle ligne dans la liste
-        logTexts.Add(line);
 
+        // // On regarde si la commande n'est pas déjà
+        // Commande cmdFromList = logCommands.Find(commands => commands.id.Equals(cmd.id));
+        
+        // // Si il y a une commande en attente alors on affecte la commande trouvée au personnage et passe la commande en paramètre dans la file d'attente
+        // if (cmdFromList != null) {
+        //     
+        // }
+
+        logCommands.Add(cmd);
+        
         // On met à jour l'affichage du log
         UpdateLog();
     }
 
-    // Méthode permettant d'actualiser l'affichage du log
-    private void UpdateLog() {
+    // Méthode public permettant d'actualiser l'affichage du log
+    public void UpdateLog() {
         string text = "";
 
         // Parcours chaque string de logTexts pour l'ajouter au log avec un \n pour sauter une ligne
-        foreach(string l in logTexts) {
-            text += l + "\n";
+        foreach(Commande c in logCommands) {
+            text += c.GetLog() + "\n";
         }
         log.text = text;
     }
 
     // Méthode public permettant de remettre à zéro le log
     public void ResetLog() {
-        logTexts = new List<string>();
+        logCommands = new List<Commande>();
         UpdateLog();
     }
 }

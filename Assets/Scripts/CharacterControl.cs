@@ -38,10 +38,12 @@ public class CharacterControl : MonoBehaviour
     public void IsNotOccupied() {
         this.isOccupied = false;
 
-        // Lorsqu'on a fini une commande on ajoute une ligne dans le log en vert
-        uIController.SetNewLineLog(command.GetLogFinish());
+        // Lorsqu'on a fini une commande on ajoute une ligne dans le log en vert, enlevé pour réduire le nombre de ligne dans les logs
+        this.command.state = State.FINISH;
+        uIController.UpdateLog();
 
         // On affecte null à la commande car elle vient d'être terminée
+        
         this.command = null;
 
         // Dit au commande controller qu'il est en attente d'une nouvelle commande
@@ -58,7 +60,8 @@ public class CharacterControl : MonoBehaviour
         this.command = cmd;
 
         // Ajoute une ligne dans le log
-        uIController.SetNewLineLog(cmd.GetLogExecute());
+        cmd.state = State.START;
+        uIController.UpdateLog();
 
         // Go to Up position
         if (cmd.ids[1].Equals("Up")) {
