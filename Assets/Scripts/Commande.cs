@@ -22,16 +22,7 @@ public class Commande
         this.command = c;
         this.ids = ids;
     }
-    
-    // Réécriture du toString, obsolète
-    public override string ToString() {
-        if(ids.Length == 2) {
-            return "Nouvelle commande : " + command + " sur " + ids[0] + " vers " + ids[1];
-        }
-        else {
-            return "Nouvelle commande"+ " : " + command;        
-        }
-    }
+
 
     // Renvoie le log correspond à la commande selon l'état de la commande
     public string GetLog() {

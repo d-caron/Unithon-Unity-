@@ -41,8 +41,6 @@ public class CommandeController : MonoBehaviour
                     GameObject.Find(id).GetComponent<CharacterControl>().SetCommand(cmd);
                     DeleteCommand(cmd);
                     commands.Add(cmd);
-
-                    
                 }
 
                 // Si il n'y a pas de commande en attente alors on affecte cette nouvelle commande au personnage

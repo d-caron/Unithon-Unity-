@@ -26,14 +26,6 @@ public class UIController : MonoBehaviour
             logCommands.RemoveAt(0);
         }
 
-        // // On regarde si la commande n'est pas déjà
-        // Commande cmdFromList = logCommands.Find(commands => commands.id.Equals(cmd.id));
-        
-        // // Si il y a une commande en attente alors on affecte la commande trouvée au personnage et passe la commande en paramètre dans la file d'attente
-        // if (cmdFromList != null) {
-        //     
-        // }
-
         logCommands.Add(cmd);
         
         // On met à jour l'affichage du log
