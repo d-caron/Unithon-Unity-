@@ -334,8 +334,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 609633360}
-  - component: {fileID: 609633359}
   - component: {fileID: 609633361}
+  - component: {fileID: 609633359}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -352,7 +352,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 609633358}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae0d5dfa5b727584ba49c2de4ee06095, type: 3}
+  m_Script: {fileID: 11500000, guid: 054c70da01e4ebb42b4fc60ae5db24dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   commands: []
@@ -1224,8 +1224,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   host: localhost
   port: 1024
-  message: 1
   action: 
+  characters: []
+  regions: []
 --- !u!1001 &2718352283439734575
 PrefabInstance:
   m_ObjectHideFlags: 0
