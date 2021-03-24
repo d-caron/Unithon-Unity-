@@ -24,6 +24,7 @@ public class Talk : MonoBehaviour
         if(partner != null){
             if (GetComponent<Deplacer>().IsNextToMe(partner.transform.position)){
                 if(discussionNotStarted){
+                    transform.LookAt(new Vector3(partner.transform.position.x, transform.position.y, partner.transform.position.z));
                     isTalking = WhoStartDiscussion();
                     discussionNotStarted = false;
                 }
@@ -64,9 +65,8 @@ public class Talk : MonoBehaviour
                         break;
                 }
             }
-            else
-            {
-                GetComponent<Deplacer>().dest = partner.transform.position;
+            else{
+                EndDiscussion();
             }
         }
     }

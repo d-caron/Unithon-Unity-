@@ -6,6 +6,7 @@ TagManager:
   tags:
   - region
   - character
+  - CharacterCamera
   layers:
   - Default
   - TransparentFX
