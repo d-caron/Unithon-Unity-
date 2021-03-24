@@ -9,18 +9,18 @@ public class UIController : MonoBehaviour
     private TextMeshProUGUI log;
 
     // La liste qui contient maximum 5 log 
-    private List<Commande> logCommands;
+    private List<Command> logCommands;
 
     void Start()
     {
         // Récupération de l'objet log
         log = FindObjectOfType<TextMeshProUGUI>();
 
-        logCommands = new List<Commande>();
+        logCommands = new List<Command>();
     }
 
     // Méthode public permettant de rajouter une ligne dans le log
-    public void SetNewLineLog (Commande cmd) {
+    public void SetNewLineLog (Command cmd) {
         // Si le nombre de ligne est supérieur à 5 alors on supprime la première valeur
         if(logCommands.Count >= 5) {
             logCommands.RemoveAt(0);
@@ -37,7 +37,7 @@ public class UIController : MonoBehaviour
         string text = "";
 
         // Parcours chaque string de logTexts pour l'ajouter au log avec un \n pour sauter une ligne
-        foreach(Commande c in logCommands) {
+        foreach(Command c in logCommands) {
             text += c.GetLog() + "\n";
         }
         log.text = text;
@@ -45,7 +45,7 @@ public class UIController : MonoBehaviour
 
     // Méthode public permettant de remettre à zéro le log
     public void ResetLog() {
-        logCommands = new List<Commande>();
+        logCommands = new List<Command>();
         UpdateLog();
     }
 }

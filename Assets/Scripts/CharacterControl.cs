@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using static Command;
 
 public class CharacterControl : MonoBehaviour
 {
-    CommandeController commandController;
+    CommandController commandController;
     // Start is called before the first frame update
 
     // Permet de savoir si le personnage est occupé ou non
@@ -13,12 +14,12 @@ public class CharacterControl : MonoBehaviour
     private UIController uIController;
 
     // Commande actuelle du personnage
-    private Commande command;
+    private Command command;
 
     void Start()
     {
         // On récupère le commandController qui permet de faire une files d'attentes
-        commandController = GameObject.Find("GameController").GetComponent<CommandeController>();
+        commandController = GameObject.Find("GameController").GetComponent<CommandController>();
 
         // On récupère l'uiController qui permet d'envoyer les notifications aux log
         uIController = GameObject.Find("GameController").GetComponent<UIController>();
@@ -48,11 +49,10 @@ public class CharacterControl : MonoBehaviour
 
         // Dit au commande controller qu'il est en attente d'une nouvelle commande
         commandController.ActionFree(gameObject.name);
-
     }
 
     // Pas censé être comme ça, version pour effectuer les tests en attente du DAO
-    public void SetCommand(Commande cmd) {
+    public void HandleCommand(Command cmd) {
         // Lorsqu'on reçoit une nouvelle commande, on devient occupé
         this.isOccupied = true;
         
@@ -63,29 +63,22 @@ public class CharacterControl : MonoBehaviour
         cmd.state = State.START;
         uIController.UpdateLog();
 
-        // Go to Up position
-        if (cmd.ids[1].Equals("Up")) {
-            Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = GameObject.Find ("Ugo").transform.position;
-        }
+        
 
-        // Go to Right position
-        if (cmd.ids[1].Equals("Right")) {
-            Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (11, 0, 0);
-        }
+        switch (cmd.action) {
+            case "deplacer" :
+                Deplacer deplacer = GameObject.Find (cmd.args[0]).GetComponent<Deplacer> ();
+                deplacer.dest = GameObject.Find (cmd.args[1]).transform.position;
+                break;
 
-        // Go to Down position
-        if (cmd.ids[1].Equals("Down")) {
-            Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (4, 0, -4);
+            case "discuter" :
+                GameObject char1 = GameObject.Find (cmd.args[0]);
+                GameObject char2 = GameObject.Find (cmd.args[1]);
+                char1.GetComponent<Talk> ().partner = char2;
+                char2.GetComponent<Talk> ().partner = char1;
+                break;
         }
-
-        // Go to Left position
-        if (cmd.ids[1].Equals("Left")) {
-            Deplacer deplacement = GameObject.Find("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (0, 0, 0);
-        }
+        
     }
 
     
