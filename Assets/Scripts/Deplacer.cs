@@ -32,7 +32,7 @@ public class Deplacer : MonoBehaviour
             if(!characterControl.GetIsOccupied()){
                 characterControl.IsOccupied();
             }
-            animator.Play("Run");
+            animator.Play("Walk");
             deplacer (dest);
         }
         else{
