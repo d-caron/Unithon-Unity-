@@ -7,6 +7,8 @@ using System.Threading;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static Msg_manager.Manager;
+using static DAO;
 
 public class Comm : MonoBehaviour
 {
@@ -15,8 +17,11 @@ public class Comm : MonoBehaviour
     
     public string host = "localhost";
     public int port;
-    public string message;
+    private string msg_to_send;
+    private string msg_to_recv = "";
     public string action;
+    public GameObject[] characters;
+    public GameObject[] regions; 
 
     private void Start ()
     {
@@ -30,7 +35,10 @@ public class Comm : MonoBehaviour
     }
 
     private void Update (){
-        TraiterMessage();
+        if (msg_to_recv.StartsWith ("{")) {
+            Msg_manager.Manager.Recv_handler (msg_to_recv);
+            msg_to_recv = "";
+        }
     }
 
     private void ConnectToTCPServer ()
@@ -38,6 +46,28 @@ public class Comm : MonoBehaviour
         try
         {
             socketConnection = new TcpClient (host, port);
+
+            DAO dao = new DAO ();
+            dao.type = "info";
+            dao.action = "add_characters";
+            characters = GameObject.FindGameObjectsWithTag("character");
+            dao.characters = new String[characters.Length];
+            for (int i = 0; i < characters.Length; i ++) {
+                dao.characters[i] = characters[i].name;
+            }
+            msg_to_send = dao.Serialize ();
+            SendTCPMessage ();
+
+            dao.action = "add_regions";
+            regions = GameObject.FindGameObjectsWithTag("region");
+            dao.world = new S_World ();
+            dao.world.regions = new String[regions.Length];
+            for (int i = 0; i < regions.Length; i ++) {
+                dao.world.regions[i] = regions[i].name;
+            }
+            msg_to_send = dao.Serialize ();
+            SendTCPMessage ();
+
             Debug.Log("Connexion à la socket réussie !");
         }
         catch (Exception)
@@ -53,9 +83,8 @@ public class Comm : MonoBehaviour
                 NetworkStream stream = socketConnection.GetStream ();
                 if (stream.CanWrite)
                 {
-                    byte[] messageAsByteArray = Encoding.ASCII.GetBytes (message);
+                    byte[] messageAsByteArray = Encoding.ASCII.GetBytes (msg_to_send);//envoyer cette liste à unity
                     stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
-                    Debug.Log ("Ca marche !");
                 }
             } 
             // Si on veut envoyer un message mais que la socket n'est pas connecté alors on essaye de se reconnecter à la socket
@@ -72,19 +101,11 @@ public class Comm : MonoBehaviour
 
     // Fonction qui envoie un message à Python pour indiquer que Unity se ferme
     public void SendCloseMessage() {
-        try
-        {
-            NetworkStream stream = socketConnection.GetStream ();
-            if (stream.CanWrite)
-            {
-                byte[] messageAsByteArray = Encoding.ASCII.GetBytes ("Close_Unity");
-                stream.Write (messageAsByteArray, 0, messageAsByteArray.Length);
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.Log ("Exception : " + e);
-        }
+        DAO dao = new DAO ();
+        dao.type = "sys";
+        dao.action = "exit";
+        msg_to_send = dao.Serialize ();
+        SendTCPMessage ();
     }
 
     private void ListenForData ()
@@ -92,27 +113,17 @@ public class Comm : MonoBehaviour
         try
         {
             byte[] bytes = new byte[2048];
-
+            
             using (NetworkStream stream = socketConnection.GetStream ())
             {
                 int length;
-
+               
                 // Si on est plus connecté à la socket alors on quitte la boucle
                 while (((length = stream.Read (bytes, 0, bytes.Length)) != 0) && IsConnected())
                 {
                     byte[] receivedData = new byte[length];
                     Array.Copy(bytes, 0, receivedData, 0, length);
-                    string msg = Encoding.ASCII.GetString (receivedData);
-                    
-                    // Si on reçoit "Close_Python" on ferme la sockets
-                    if (msg.Equals("Close_Python")) {
-                        Debug.Log("La socket a été déconnecté");
-                        socketConnection.Close ();
-                    } 
-                    // Sinon c'est msg classique et on l'affiche
-                    else {
-                        Debug.Log (msg);
-                    }
+                    msg_to_recv = Encoding.ASCII.GetString (receivedData);
                 }
                 if(!IsConnected()) {
                     Debug.Log("La socket est déconnecté");
@@ -134,37 +145,6 @@ public class Comm : MonoBehaviour
     private void OnApplicationQuit()
     {
         CloseTCPClient ();
-    }
-
-    private void TraiterMessage(){
-        if ( action == "haut") {
-            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (4, 0, 4);
-        }
-
-        
-        if ( action == "droite") {
-            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (11, 0, 0);
-        }
-
-        
-        if ( action == "bas") {
-            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (4, 0, -4);
-        }
-
-        if ( action == "gauche") {
-            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = new Vector3 (0, 0, 0);
-        }
-
-        if ( action == "Ugo") {
-            Deplacer deplacement = GameObject.Find ("Michel").GetComponent<Deplacer> ();
-            deplacement.dest = GameObject.Find ("Ugo").transform.position;
-        }
-
-        action = "";
     }
 
 
@@ -211,7 +191,7 @@ public class Comm : MonoBehaviour
 
                 return true;
             }
-            else
+            else 
             {
                 return false;
             }

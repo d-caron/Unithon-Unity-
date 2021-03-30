@@ -1,33 +1,48 @@
 using System;
 using UnityEngine;
 
+
 public class Deplacer : MonoBehaviour
 {
     private static float DELTA_POS = 1.0F;
     public Animator animator;
+    public bool isTalking;
 
     // public float x, y, z;
     public Vector3 dest;
 
+    // Le CharacterControl permet de lui dire si le personnage est occupé ou non 
+    CharacterControl characterControl;
+
     // Start is called before the first frame update
     void Start()
     {
+        characterControl = gameObject.GetComponent<CharacterControl>();
         dest = transform.position;
+        isTalking = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
         // On vérifie si on est au bon endroit sinon on se déplace
-        if (Math.Abs (transform.position.x - dest.x) > DELTA_POS ||
-            Math.Abs (transform.position.z - dest.z) > DELTA_POS)
+        if (!IsNextToMe(dest))
         {
-            animator.Play("Run");
+            // Si le personnage n'était pas occupé à la dernière itération alors il devient occupé sinon on ne fait rien car il est déjà
+            if(!characterControl.GetIsOccupied()){
+                characterControl.IsOccupied();
+            }
+            animator.Play("Walk");
             deplacer (dest);
         }
         else{
-            animator.Play("Idle");
+            // Si le personnage était occupé à la dernière itération alors il ne devient plus occupé sinon on ne fait rien car il est déjà
+            if(characterControl.GetIsOccupied()){
+                characterControl.IsNotOccupied();
+            }
+            if(!isTalking){
+                animator.Play("Idle");
+            }
         }
     }
 
@@ -42,5 +57,10 @@ public class Deplacer : MonoBehaviour
 
         Vector3 avancement = Vector3.Normalize (new Vector3 (dist_x, 0,dist_z)) * Time.deltaTime * 3;
         transform.position = transform.position + avancement;
+    }
+
+    public bool IsNextToMe(Vector3 to){
+        return !((Math.Abs (transform.position.x - to.x) > DELTA_POS) ||
+        (Math.Abs (transform.position.z - to.z) > DELTA_POS));
     }
 }
