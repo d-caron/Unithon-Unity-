@@ -4,7 +4,7 @@ Project Unithon : Unity side
 Réalisé par :
 - Clément Gantou
 - Léo Segond
-- Dylon Caron
+- Dylan Caron
 - Raphaël Huc
 
 Sujet de base :
