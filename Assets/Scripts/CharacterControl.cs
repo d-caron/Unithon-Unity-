@@ -25,6 +25,14 @@ public class CharacterControl : MonoBehaviour
         uIController = GameObject.Find("GameController").GetComponent<UIController>();
     }
 
+    /*
+    * @do : Renvoie la commande actuellement exécuté par l'IA
+    * @return Command
+    */
+    public Command GetCurrentCommand() {
+        return command;
+    }
+
     // Renvoie le boolean indiquant si oui ou non le personnage est occupé
     public bool GetIsOccupied() {
         return this.isOccupied;

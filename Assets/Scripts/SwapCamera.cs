@@ -11,6 +11,8 @@ public class SwapCamera : MonoBehaviour
     public int selectedIA;
     public bool globalActivated;
 
+    private CommandController commandController;
+
     /*
     * @do : Initialise la caméra sur la globale et désactive celles des IAs
     * @return void
@@ -30,6 +32,8 @@ public class SwapCamera : MonoBehaviour
             cam.SetActive(false);
         }
         selectedIA = 0;
+
+        commandController = GameObject.Find("GameController").GetComponent<CommandController>();
     }
 
     /*
@@ -41,6 +45,7 @@ public class SwapCamera : MonoBehaviour
         //cliquer sur la molette pour changer entre TPS et global
         if(Input.GetMouseButtonDown(2)){
             globalActivated = !globalActivated;
+            SetCurrentIA();
         }
         
         //cam global
@@ -48,11 +53,13 @@ public class SwapCamera : MonoBehaviour
             if(Input.GetAxis("Mouse ScrollWheel")==0){
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
                 mainCam.SetActive(true);
+                
             }
             else{
                 globalActivated = !globalActivated;
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
                 mainCam.SetActive(false);
+                SetCurrentIA();
             }
         }
 
@@ -66,16 +73,30 @@ public class SwapCamera : MonoBehaviour
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
                 selectedIA--;
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
+                SetCurrentIA();
             }
             //changer vers l'IA suivante
             if(Input.GetAxis("Mouse ScrollWheel")>0){
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(false);
                 selectedIA++;
                 tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].SetActive(true);
+                SetCurrentIA();
             }
         }
+    }
 
-        
-        
+
+    /*
+    * @do : Insert le CharacterControl de l'IA actuellement focus par la caméra au commandController
+    * @return : void
+    * @args : String, le type de caméra en cours
+    */
+    public void SetCurrentIA() {
+        Debug.Log(tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].transform.parent.gameObject.GetComponent<CharacterControl>().name);
+        if(!globalActivated) {
+            commandController.SetNewIAFocus(tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].transform.parent.gameObject.GetComponent<CharacterControl>());
+        } else if (globalActivated){
+            commandController.SetNewIAFocus(null);
+        }
     }
 }

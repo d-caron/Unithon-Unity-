@@ -10,6 +10,8 @@ public class CommandController : MonoBehaviour
     public List<Command> commands;
     private UIController uIController;
 
+    private CharacterControl currentCharacter;
+
 
     void Start()
     {
@@ -20,8 +22,6 @@ public class CommandController : MonoBehaviour
     // Ajoute une nouvelle commande à la liste des commandes en attente
     public void NewCommand(Command cmd) {
         CharacterControl targetCharacter = GameObject.Find(cmd.args[0]).GetComponent<CharacterControl>();
-
-        Debug.Log(cmd);
 
         // On check si le targetCharacter a bien été trouvé
         if (targetCharacter != null) {
@@ -34,6 +34,11 @@ public class CommandController : MonoBehaviour
                 commands.Add(cmd);
             }
             uIController.SetNewLineLog(cmd);   
+        }
+        if (currentCharacter == null) {
+            UpdateCommandsUI();
+        } else if (targetCharacter.name.Equals(currentCharacter.name)) {
+            UpdateCommandsUI();
         }
     }
 
@@ -52,5 +57,35 @@ public class CommandController : MonoBehaviour
             GameObject.Find(id).GetComponent<CharacterControl>().HandleCommand(cmd);
             DeleteCommand(cmd);
         }
+        UpdateCommandsUI();
+    }
+
+    /*
+    * @do : Attribut une nouvelle valeur pour character, pour permettre de savoir sur quelle IA est posée la caméra
+    * @args : CharacterControl, la nouvelle IA focus
+    */
+    public void SetNewIAFocus (CharacterControl character) {
+        Debug.Log(character);
+        this.currentCharacter = character;
+        UpdateCommandsUI();
+    }
+
+    public List<Command> GetCommandSpecificIA() {
+        List<Command> commandsIA = new List<Command>();
+        
+        if(currentCharacter != null) {
+            if (currentCharacter.GetCurrentCommand() != null) {
+                commandsIA.Add(currentCharacter.GetCurrentCommand());
+            }
+            commandsIA.AddRange(commands.FindAll(commands => commands.args[0].Equals(currentCharacter.name)));
+        }
+
+
+        return commandsIA;
+    }
+
+
+    public void UpdateCommandsUI() {
+        uIController.SetCommandsUI(GetCommandSpecificIA());
     }
 }

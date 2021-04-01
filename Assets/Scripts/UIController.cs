@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIController : MonoBehaviour
@@ -11,13 +12,23 @@ public class UIController : MonoBehaviour
     // La liste qui contient maximum 5 log 
     private List<Command> logCommands;
 
+    private List<Command> commandsUI;
+
+    public List<Sprite> icons;
+
+    public Image[] images;
+
     void Start()
     {
         // Récupération de l'objet log
-        log = FindObjectOfType<TextMeshProUGUI>();
-
+        log = GameObject.Find("Log").GetComponent<TextMeshProUGUI>();
+        //camera = GameObject.Find("GameController").GetComponent<SwapCamera>();
         logCommands = new List<Command>();
+        commandsUI = new List<Command>();
+        ResetCommandsUI();
     }
+
+
 
     // Méthode public permettant de rajouter une ligne dans le log
     public void SetNewLineLog (Command cmd) {
@@ -48,4 +59,36 @@ public class UIController : MonoBehaviour
         logCommands = new List<Command>();
         UpdateLog();
     }
+
+    public void SetCommandsUI(List<Command> commands) {
+        commandsUI = commands;
+        if (commands != null) {
+            UpdateCommandsUi();
+        }
+    }
+
+    public void UpdateCommandsUi(){
+        ResetCommandsUI();
+        for (int i = 0; i < commandsUI.Count; i++) {
+            if (i < images.Length) {
+                IconMouseOver iconMouseOver = images[i].GetComponent<IconMouseOver>();
+                iconMouseOver.gameObject.SetActive(true);
+                images[i].sprite = icons[0];
+                images[i].color = new Color(1f,1f,1f,1f);
+                iconMouseOver.SetText(commandsUI[i].action + " : " + commandsUI[i].args[1]);
+            }
+            
+        }
+    }
+
+    public void ResetCommandsUI() {
+        for (int i = 0; i < images.Length; i++) {
+            images[i].sprite = null;
+            images[i].color = new Color(0f,0f,0f,0f);
+            IconMouseOver iconMouseOver = images[i].GetComponent<IconMouseOver>();
+            iconMouseOver.gameObject.SetActive(false);
+
+        }
+    }
+
 }
