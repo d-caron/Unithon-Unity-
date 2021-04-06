@@ -9,8 +9,6 @@ namespace Msg_manager
     public class Manager
     {
         public static void Recv_handler (string msg){
-            Debug.Log (msg);
-
             var dao = new DAO();
             dao.Deserialize(msg);
 

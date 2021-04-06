@@ -36,8 +36,12 @@ public class Comm : MonoBehaviour
 
     private void Update (){
         if (msg_to_recv.StartsWith ("{")) {
-            Msg_manager.Manager.Recv_handler (msg_to_recv);
-            msg_to_recv = "";
+            // On cherche l'acolade fermante de l'objet DAO
+            int i = msg_to_recv.IndexOf ("}");
+            i = msg_to_recv.IndexOf ("}", i+1);
+
+            Msg_manager.Manager.Recv_handler (msg_to_recv.Substring (0, i+1));
+            msg_to_recv = msg_to_recv.Remove (0, i+1);
         }
     }
 
@@ -123,7 +127,7 @@ public class Comm : MonoBehaviour
                 {
                     byte[] receivedData = new byte[length];
                     Array.Copy(bytes, 0, receivedData, 0, length);
-                    msg_to_recv = Encoding.ASCII.GetString (receivedData);
+                    msg_to_recv += Encoding.ASCII.GetString (receivedData);
                 }
                 if(!IsConnected()) {
                     Debug.Log("La socket est déconnecté");

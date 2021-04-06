@@ -21,8 +21,6 @@ public class CommandController : MonoBehaviour
     public void NewCommand(Command cmd) {
         CharacterControl targetCharacter = GameObject.Find(cmd.args[0]).GetComponent<CharacterControl>();
 
-        Debug.Log(cmd);
-
         // On check si le targetCharacter a bien été trouvé
         if (targetCharacter != null) {
             if (!targetCharacter.GetIsOccupied()) {
