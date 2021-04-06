@@ -8,8 +8,11 @@ public class CommandController : MonoBehaviour
 
     // La liste des commandes en attente
     public List<Command> commands;
+
+    // Le composant contrôlant l'UI
     private UIController uIController;
 
+    // Le composant CharacterControl du personnage qu'on regarde, null si on est dans la vue global
     private CharacterControl currentCharacter;
 
 
@@ -19,7 +22,10 @@ public class CommandController : MonoBehaviour
         uIController = GameObject.Find("GameController").GetComponent<UIController>();
     }
 
-    // Ajoute une nouvelle commande à la liste des commandes en attente
+    /*
+    * @do : Ajoute une nouvelle commande à la liste des commandes en attente ou si le personnage est libre, directement au personnage
+    * @args : Command, la commande à ajouter
+    */
     public void NewCommand(Command cmd) {
         CharacterControl targetCharacter = GameObject.Find(cmd.args[0]).GetComponent<CharacterControl>();
 
@@ -42,12 +48,18 @@ public class CommandController : MonoBehaviour
         }
     }
 
-    // Supprime une commande de la liste à partir de l'id d'une commande (unique générée aléatoirement avec GUID)
+    /*
+    * @do : Supprime la Command en paramètre de la liste de commands
+    * @args : Command, la commande à supprimer
+    */
     void DeleteCommand(Command command) {
         commands.Remove(command);
     }
 
-    // Appelé lorsqu'un personnage vient de terminer une action
+    /*
+    * @do : Appelé par le CharacterControl pour signaler que le personnage vient de finir son action pour en demmander une nouvelle
+    * @args : string, l'id du personnage (le nom) qui appel la fonction
+    */
     public void ActionFree(string id) {
         // On regarde si il y a une commande en attente pour le personnage dont le nom est "id" (nom de l'objet)
         
@@ -70,6 +82,10 @@ public class CommandController : MonoBehaviour
         UpdateCommandsUI();
     }
 
+    /*
+    * @do : Renvoie la liste des commandes liées au personnage actuel (commande en attente + commande en cours), ou une liste null si on est sur la vue global
+    * @return : List<Command>, la liste des commandes liées à un personnage (commande en attente + commande en cours)
+    */
     public List<Command> GetCommandSpecificIA() {
         List<Command> commandsIA = new List<Command>();
         
@@ -84,7 +100,9 @@ public class CommandController : MonoBehaviour
         return commandsIA;
     }
 
-
+    /*
+    * @do : Affecte au composant UIController la nouvelle liste de commande d'un IA spécifique via la fonction GetCommandSpecificIA
+    */
     public void UpdateCommandsUI() {
         uIController.SetCommandsUI(GetCommandSpecificIA());
     }

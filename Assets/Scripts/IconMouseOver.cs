@@ -19,28 +19,38 @@ public class IconMouseOver : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
      {
         if (mouse_over)
         {
-            description.gameObject.SetActive(true);
-            description.text = text;
+            if (!description.gameObject.activeInHierarchy){
+                description.gameObject.SetActive(true);
+                description.text = text;
+            }
         } else {
-            description.text = "";       
-            description.gameObject.SetActive(false);
+            if (description.gameObject.activeInHierarchy){
+                description.text = "";       
+                description.gameObject.SetActive(false);
+            }
         }
      }
 
+    /*
+    * @do : Affecte vrai à mouse_over lorsque la souris passe sur l'icon (interface : IPointerEnterHandler)
+    */
     public void OnPointerEnter(PointerEventData eventData)
     {
         mouse_over = true;
     }
  
+    /*
+    * @do : Affecte faux à mouse_over lorsque la souris sort de l'icon (interface : IPointerExitHandler)
+    */
     public void OnPointerExit(PointerEventData eventData)
     {
         mouse_over = false;
     }
 
-    public void GetText() {
-        Debug.Log(text);
-    }
-
+    /*
+    * @do : Affecte une nouveau string à text
+    * @args : string, la nouvelle valeur décrivant l'icon 
+    */
     public void SetText(string text) {
         this.text = text;
     }

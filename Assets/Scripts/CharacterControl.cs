@@ -33,17 +33,24 @@ public class CharacterControl : MonoBehaviour
         return command;
     }
 
-    // Renvoie le boolean indiquant si oui ou non le personnage est occupé
+    /*
+    * @do : Renvoie le boolean indiquant si oui ou non le personnage est occupé
+    * @return bool
+    */
     public bool GetIsOccupied() {
         return this.isOccupied;
     }
 
-    // Affecte true à isOccupied
+    /*
+    * @do : Affecte vrai (true) à la variable isOccupied
+    */
     public void IsOccupied() {
         this.isOccupied = true;
     }
 
-    // Affecte false à isOccupied
+    /*
+    * @do : Affecte faux (false) à la variable isOccupied et demmande une nouvelle commande au CommandController
+    */
     public void IsNotOccupied() {
         this.isOccupied = false;
 
@@ -51,15 +58,21 @@ public class CharacterControl : MonoBehaviour
         this.command.state = State.FINISH;
         uIController.UpdateLog();
 
-        // On affecte null à la commande car elle vient d'être terminée
+        // On affecte null à la commande car elle vient d'être terminée sauf discuter car c'est une action "passive"
+        if (!this.command.action.Equals("discuter")) {
+            this.command = null;
+        }
         
-        this.command = null;
 
         // Dit au commande controller qu'il est en attente d'une nouvelle commande
         commandController.ActionFree(gameObject.name);
     }
 
-    // Pas censé être comme ça, version pour effectuer les tests en attente du DAO
+    
+    /*
+    * @do : Permet au CommandController d'affecter une nouvelle commande au CharacterControl et de lui affecter l'action correspondante
+    * @args : Command, la nouvelle commande
+    */ 
     public void HandleCommand(Command cmd) {
         // Lorsqu'on reçoit une nouvelle commande, on devient occupé
         this.isOccupied = true;

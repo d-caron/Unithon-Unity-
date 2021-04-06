@@ -25,7 +25,7 @@ public class Event_handler : MonoBehaviour
             Command cmd = new Command();
             cmd.action = "deplacer";
             cmd.args[0] = character;
-            cmd.args[1] = "Nord";
+            cmd.args[1] = "Ugo";
             commandeControl.NewCommand(cmd);
         }
 
@@ -56,10 +56,13 @@ public class Event_handler : MonoBehaviour
             commandeControl.NewCommand(cmd);
         }
 
-        // [SPACE] Send a message to Python
+        // [SPACE] Discuss with UGo
         if (Input.GetKeyDown (KeyCode.Space)) {
-            Comm comm = GameObject.Find ("Comm").GetComponent<Comm> ();
-            comm.SendTCPMessage ();
+            Command cmd = new Command();
+            cmd.action = "discuter";
+            cmd.args[0] = character;
+            cmd.args[1] = "Ugo";
+            commandeControl.NewCommand(cmd);
         }
     }
 }

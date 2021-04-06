@@ -836,7 +836,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -154.27411, y: -39}
+  m_AnchoredPosition: {x: -188, y: -39}
   m_SizeDelta: {x: 275, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &810567692
@@ -1854,7 +1854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5413622664743642922, guid: 1154a941aba92534b8822ad3f644b01d, type: 3}
       propertyPath: icons.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5413622664743642922, guid: 1154a941aba92534b8822ad3f644b01d, type: 3}
       propertyPath: images.Array.size
@@ -1862,6 +1862,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5413622664743642922, guid: 1154a941aba92534b8822ad3f644b01d, type: 3}
       propertyPath: icons.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 65aca7da3adeaad468c0f902ffa1d855, type: 3}
+    - target: {fileID: 5413622664743642922, guid: 1154a941aba92534b8822ad3f644b01d, type: 3}
+      propertyPath: icons.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: eb85189c96c383a419534df6c0ba77c9, type: 3}
+    - target: {fileID: 5413622664743642922, guid: 1154a941aba92534b8822ad3f644b01d, type: 3}
+      propertyPath: icons.Array.data[2]
       value: 
       objectReference: {fileID: 21300000, guid: 1762c441b6980fa4fad6e7a6f9f6888e, type: 3}
     - target: {fileID: 5413622664743642922, guid: 1154a941aba92534b8822ad3f644b01d, type: 3}
