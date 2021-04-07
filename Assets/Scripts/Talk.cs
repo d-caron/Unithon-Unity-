@@ -26,6 +26,8 @@ public class Talk : MonoBehaviour
                 if(discussionNotStarted){
                     transform.LookAt(new Vector3(partner.transform.position.x, transform.position.y, partner.transform.position.z));
                     isTalking = WhoStartDiscussion();
+                    GetComponent<Deplacer>().phone.SetActive(false);
+                    GetComponent<Deplacer>().micro.SetActive(false);
                     discussionNotStarted = false;
                 }
                 GetComponent<Deplacer>().isTalking = true;
@@ -73,6 +75,8 @@ public class Talk : MonoBehaviour
 
     public void EndDiscussion(){
         partner.GetComponent<Deplacer>().isTalking = false;
+        partner.GetComponent<Deplacer>().timerRandomIdle = 5.0f;
+        GetComponent<Deplacer>().timerRandomIdle = 5.0f;
         GetComponent<Deplacer>().isTalking = false;
         partner.GetComponent<Talk>().partner = null;
         partner = null;
