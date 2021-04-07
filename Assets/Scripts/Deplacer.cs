@@ -37,11 +37,11 @@ public class Deplacer : MonoBehaviour
             // Si le personnage n'était pas occupé à la dernière itération alors il devient occupé sinon on ne fait rien car il est déjà
             if(!characterControl.GetIsOccupied()){
                 characterControl.IsOccupied();
-                timerRandomIdle = 5.0f;
-                //désactivation du visuel des objets associés aux Idles randoms
-                micro.SetActive(false);
-                phone.SetActive(false);
             }
+            timerRandomIdle = 5.0f;
+            //désactivation du visuel des objets associés aux Idles randoms
+            micro.SetActive(false);
+            phone.SetActive(false);
             animator.Play("Walk");
             deplacer (dest);
         }
@@ -56,7 +56,8 @@ public class Deplacer : MonoBehaviour
                     timerRandomIdle = 5.0f;
                 }
                 else{
-                    if(!(animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == "Idle_Generic")){
+                    String currentAnimation = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+                    if(currentAnimation != "Idle_Generic" && currentAnimation != "Walking" && currentAnimation != "Ninja_Run"){
                         timerRandomIdle = 5.0f;
                     }
                     else{
