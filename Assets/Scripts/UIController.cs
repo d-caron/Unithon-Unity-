@@ -84,14 +84,17 @@ public class UIController : MonoBehaviour
     * @do     : Met à jour le tableau d'image selon les commandes dans commandsUI
     */
     public void UpdateCommandsUi(){
+        Debug.Log("UpdateUI");
         ResetCommandsUI();
         for (int i = 0; i < commandsUI.Count; i++) {
             if (i < images.Length) {
-                IconMouseOver iconMouseOver = images[i].GetComponent<IconMouseOver>();
-                iconMouseOver.gameObject.SetActive(true);
-                images[i].sprite = GetSpriteForCommands(commandsUI[i]);
-                images[i].color = new Color(1f,1f,1f,1f);
-                iconMouseOver.SetText(commandsUI[i].action + " : " + commandsUI[i].args[1]);
+                if(commandsUI[i].action != null) {
+                    IconMouseOver iconMouseOver = images[i].GetComponent<IconMouseOver>();
+                    iconMouseOver.gameObject.SetActive(true);
+                    images[i].sprite = GetSpriteForCommands(commandsUI[i]);
+                    images[i].color = new Color(1f,1f,1f,1f);
+                    iconMouseOver.SetText(commandsUI[i].action + " : " + commandsUI[i].args[1]);
+                }
             }
         }
     }
@@ -105,7 +108,6 @@ public class UIController : MonoBehaviour
             images[i].color = new Color(0f,0f,0f,0f);
             IconMouseOver iconMouseOver = images[i].GetComponent<IconMouseOver>();
             iconMouseOver.gameObject.SetActive(false);
-
         }
     }
 
@@ -116,7 +118,6 @@ public class UIController : MonoBehaviour
     */
     private Sprite GetSpriteForCommands(Command cmd) {
         for(int i = 0; i < icons.Count; i++) {
-            Debug.Log(icons[i].name);
             if (icons[i].name.ToLower().Contains(cmd.action.ToLower())) {
                 return icons[i];
             }

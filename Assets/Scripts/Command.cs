@@ -15,10 +15,24 @@ public class Command
     public string action;
     public string[] args = new string[2];
     public State state;
+
+    public bool passive;
     
+    public Command(string action, string[] args) {
+        this.action = action;
+        this.args = args;
+        this.passive = false;
+    }
+
+    public Command(string action, string[] args, bool passive) {
+        this.action = action;
+        this.args = args;
+        this.passive = passive;
+    }
 
     public Command () {
-        args = new string[2];
+        this.args = new string[2];
+        this.passive = false;
     }
 
 

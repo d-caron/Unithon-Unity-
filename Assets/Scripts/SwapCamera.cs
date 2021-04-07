@@ -92,7 +92,6 @@ public class SwapCamera : MonoBehaviour
     * @args : String, le type de caméra en cours
     */
     public void SetCurrentIA() {
-        Debug.Log(tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].transform.parent.gameObject.GetComponent<CharacterControl>().name);
         if(!globalActivated) {
             commandController.SetNewIAFocus(tabCamIA[Mathf.Abs(selectedIA) % tabCamIA.Length].transform.parent.gameObject.GetComponent<CharacterControl>());
         } else if (globalActivated){

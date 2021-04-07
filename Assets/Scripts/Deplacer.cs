@@ -13,6 +13,7 @@ public class Deplacer : MonoBehaviour
 
     // Le CharacterControl permet de lui dire si le personnage est occupé ou non 
     CharacterControl characterControl;
+    public bool isMoving;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class Deplacer : MonoBehaviour
         characterControl = gameObject.GetComponent<CharacterControl>();
         dest = transform.position;
         isTalking = false;
+        isMoving = false;
     }
 
     // Update is called once per frame
@@ -34,14 +36,23 @@ public class Deplacer : MonoBehaviour
             }
             animator.Play("Walk");
             deplacer (dest);
+            isMoving = true;
         }
         else{
             // Si le personnage était occupé à la dernière itération alors il ne devient plus occupé sinon on ne fait rien car il est déjà
             if(characterControl.GetIsOccupied()){
-                characterControl.IsNotOccupied();
-            }
+                if(isMoving) {
+                    isMoving = false;
+                    characterControl.IsNotOccupied(false);
+                }
+            } else
             if(!isTalking){
+                isMoving = false;
                 animator.Play("Idle");
+            } 
+            // Si la destination est près de moi et que je ne me déplace pas et que je ne discute pas alors je suis forcément pas occupé (fait car erreur chelou A FIX)
+            else if (characterControl.GetCurrentCommandAction().Equals("deplacer")) {
+                characterControl.IsNotOccupied(false);
             }
         }
     }

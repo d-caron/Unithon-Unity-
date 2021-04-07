@@ -32,7 +32,9 @@ public class CommandController : MonoBehaviour
         // On check si le targetCharacter a bien été trouvé
         if (targetCharacter != null) {
             if (!targetCharacter.GetIsOccupied()) {
-                targetCharacter.HandleCommand(cmd);
+                targetCharacter.HandleCommand(cmd, false);
+            } else if (targetCharacter.GetCurrentCommand().passive) {
+                targetCharacter.HandleCommand(cmd, false);
             }
             // Sinon elle passe en file d'attente
             else {
@@ -66,7 +68,7 @@ public class CommandController : MonoBehaviour
         Command cmd = commands.Find(commands => commands.args[0].Equals(id));
         // Si on trouve une commande, on affecte alors au personnage cette commande (la première qui trouve dans la liste)
         if (cmd != null) {
-            GameObject.Find(id).GetComponent<CharacterControl>().HandleCommand(cmd);
+            GameObject.Find(id).GetComponent<CharacterControl>().HandleCommand(cmd, false);
             DeleteCommand(cmd);
         }
         UpdateCommandsUI();
@@ -77,7 +79,6 @@ public class CommandController : MonoBehaviour
     * @args : CharacterControl, la nouvelle IA focus
     */
     public void SetNewIAFocus (CharacterControl character) {
-        Debug.Log(character);
         this.currentCharacter = character;
         UpdateCommandsUI();
     }
@@ -88,7 +89,6 @@ public class CommandController : MonoBehaviour
     */
     public List<Command> GetCommandSpecificIA() {
         List<Command> commandsIA = new List<Command>();
-        
         if(currentCharacter != null) {
             if (currentCharacter.GetCurrentCommand() != null) {
                 commandsIA.Add(currentCharacter.GetCurrentCommand());

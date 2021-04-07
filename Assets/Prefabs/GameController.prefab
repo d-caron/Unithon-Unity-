@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5413622664743642923}
   - component: {fileID: 5413622664743642920}
   - component: {fileID: 5413622664743642927}
+  - component: {fileID: 1302676994}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -46,6 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87704282cd4fac34a91472cfe665dc80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icons:
+  - {fileID: 21300000, guid: 65aca7da3adeaad468c0f902ffa1d855, type: 3}
+  - {fileID: 21300000, guid: eb85189c96c383a419534df6c0ba77c9, type: 3}
+  - {fileID: 21300000, guid: 1762c441b6980fa4fad6e7a6f9f6888e, type: 3}
+  images:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &5413622664743642923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,3 +103,15 @@ MonoBehaviour:
   action: 
   characters: []
   regions: []
+--- !u!114 &1302676994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413622664743642916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d045bac01c19d024bab0031d2664ee74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
