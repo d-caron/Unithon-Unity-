@@ -34,6 +34,7 @@ public class CommandController : MonoBehaviour
             if (!targetCharacter.GetIsOccupied()) {
                 targetCharacter.HandleCommand(cmd, false);
             } else if (targetCharacter.GetCurrentCommand().passive) {
+                targetCharacter.GetCurrentCommand().state = State.FINISH;
                 targetCharacter.HandleCommand(cmd, false);
             }
             // Sinon elle passe en file d'attente

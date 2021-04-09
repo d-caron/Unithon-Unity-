@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 using static Command;
 
 public class CharacterControl : MonoBehaviour
 {
     CommandController commandController;
-    // Start is called before the first frame update
 
     // Permet de savoir si le personnage est occupé ou non
     public bool isOccupied = false;
@@ -15,6 +15,9 @@ public class CharacterControl : MonoBehaviour
 
     // Commande actuelle du personnage
     public Command command;
+
+    // Distance max pour être considéré comme étant proche de quelque chose
+    private static float DIST_NEXT_MAX = 1.0F;
 
     void Start()
     {
@@ -25,6 +28,18 @@ public class CharacterControl : MonoBehaviour
         uIController = GameObject.Find("GameController").GetComponent<UIController>();
 
         this.command = null;
+
+        // De base on désactive les différentes actions
+        DisableComponentAction();
+    }
+
+    void Update() {
+        // Si on a pas d'action à réaliser alors on active le composant Idle pour faire les différentes animations
+        if(GetCurrentCommandAction().Equals("")) {
+            GetComponent<Idle>().enabled = true;
+        } else {
+            GetComponent<Idle>().enabled = false;
+        }
     }
 
     /*
@@ -66,33 +81,26 @@ public class CharacterControl : MonoBehaviour
     /*
     * @do : Affecte faux (false) à la variable isOccupied et demmande une nouvelle commande au CommandController
     */
-    public void IsNotOccupied(bool fromTalk) {
+    public void IsNotOccupied() {
         this.isOccupied = false;
         Debug.Log(transform.name + ": " + "IsNotOccupied");
 
-        // Lorsqu'on a fini une commande on ajoute une ligne dans le log en vert, enlevé pour réduire le nombre de ligne dans les logs
-        if(this.command != null && (this.command.action.Equals("discuter") && fromTalk)) {
-            this.command.state = State.FINISH;
-            uIController.UpdateLog();
 
-            // On affecte null à la commande car elle vient d'être terminée sauf discuter car c'est une action "passive"
-            this.command = null;
-        } else if (this.command != null && !fromTalk) {
-            this.command.state = State.FINISH;
-            uIController.UpdateLog();
-
-            // On affecte null à la commande car elle vient d'être terminée sauf discuter car c'est une action "passive"
-            this.command = null;
-        }
-
-        
-        
+        // On affecte null à la commande car elle vient d'être terminée sauf discuter car c'est une action "passive"
+        SetCommandTerminateAndNull();
+        DisableComponentAction();
 
         // Dit au commande controller qu'il est en attente d'une nouvelle commande
         commandController.ActionFree(gameObject.name);
         uIController.UpdateLog();
     }
 
+    public void SetCommandTerminateAndNull() {
+        if(!GetCurrentCommandAction().Equals("")) {
+            command.state = State.FINISH;
+            command = null;
+        }
+    }
     
     /*
     * @do : Permet au CommandController d'affecter une nouvelle commande au CharacterControl et de lui affecter l'action correspondante
@@ -100,42 +108,70 @@ public class CharacterControl : MonoBehaviour
               ignore, si on est la target du discussion on ignore l'execution de la commande
     */ 
     public void HandleCommand(Command cmd, bool ignore) {
+        if (GetComponent<Talk>().enabled) {
+            GetComponent<Talk>().IsFinish();
+        }
+
+        // Lorsqu'on reçoit une commande on désactive toutes les actions
+        DisableComponentAction();
+
         // Lorsqu'on reçoit une nouvelle commande, on devient occupé
         this.isOccupied = true;
         
-        // On affecte la nouvelle commande
-        if(this.command != null) {
-            this.command.state = State.FINISH;
-        }
-        this.command = cmd;
+        
+        SetCommandTerminateAndNull();
+        command = cmd;
 
-        // Ajoute une ligne dans le log
+        // Passe le status de la commande à START pour signaler au log qu'elle commence
         cmd.state = State.START;
-        
-
-        
 
         switch (cmd.action) {
             case "deplacer" :
-                Deplacer deplacer = GameObject.Find (cmd.args[0]).GetComponent<Deplacer> ();
+                GetComponent<Deplacer>().enabled = true;
+                Deplacer deplacer = GameObject.Find(cmd.args[0]).GetComponent<Deplacer> ();
                 deplacer.dest = GameObject.Find (cmd.args[1]).transform.position;
-                deplacer.isMoving = true;
                 break;
 
             case "discuter" :
-                cmd.passive = true;
-                if (!ignore) {
-                    GameObject char1 = GameObject.Find(cmd.args[0]);
-                    GameObject char2 = GameObject.Find(cmd.args[1]);
-                    char1.GetComponent<Talk>().partner = char2;
-                    char2.GetComponent<Talk>().partner = char1;
-                    char2.GetComponent<CharacterControl>().HandleCommand(new Command("discuter", new string[]{char2.name, cmd.args[0]}), true);
-                    commandController.UpdateCommandsUI();
+                GameObject char1 = GameObject.Find(cmd.args[0]);
+                GameObject char2 = GameObject.Find(cmd.args[1]);
+                if (IsNextToMe(char2.transform.position)) {
+                    cmd.passive = true;
+                    GetComponent<Talk>().enabled = true;
+                    if (!ignore) {
+                        char1.GetComponent<Talk>().partner = char2;
+                        char2.GetComponent<Talk>().partner = char1;
+                        char2.GetComponent<CharacterControl>().HandleCommand(new Command("discuter", new string[]{char2.name, cmd.args[0]}), true);
+                        commandController.UpdateCommandsUI();
+                    }
+                } 
+                // Si on est pas proche du personnage, on termine la commande sans rien faire
+                else {
+                    IsNotOccupied();
                 }
                 break;
         }
         uIController.UpdateLog();
         
+    }
+
+    /*
+    * @do : Désactive les composants d'actions pour l'instant juste Deplacer et Talk, rajouté ici les différentes actions
+    */ 
+    public void DisableComponentAction(){
+        GetComponent<Idle>().enabled = false;
+        GetComponent<Deplacer>().enabled = false;
+        GetComponent<Talk>().enabled = false;
+    } 
+
+    /*
+    * @do : Check si le vector3 to est proche du gameObject à partir de DIST_NEXT_MAX qui est la distance maximale pour être considéré comme étant proche
+    * @args : Vector3 to, les coordonnées à tester
+    * @return : bool
+    */
+    public bool IsNextToMe(Vector3 to){
+        return !((Math.Abs (transform.position.x - to.x) > DIST_NEXT_MAX) ||
+        (Math.Abs (transform.position.z - to.z) > DIST_NEXT_MAX));
     }
 
     
