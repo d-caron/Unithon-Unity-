@@ -7,6 +7,9 @@ public class Deplacer : MonoBehaviour
     private static float DELTA_POS = 1.0F;
     public Animator animator;
     public bool isTalking;
+    public float timerRandomIdle = 5.0f;
+    public GameObject phone;
+    public GameObject micro;
 
     // public float x, y, z;
     public Vector3 dest;
@@ -22,6 +25,9 @@ public class Deplacer : MonoBehaviour
         dest = transform.position;
         isTalking = false;
         isMoving = false;
+        //désactivation du visuel des objets associés aux Idles randoms
+        micro.SetActive(false);
+        phone.SetActive(false);
     }
 
     // Update is called once per frame
@@ -34,6 +40,10 @@ public class Deplacer : MonoBehaviour
             if(!characterControl.GetIsOccupied()){
                 characterControl.IsOccupied();
             }
+            timerRandomIdle = 5.0f;
+            //désactivation du visuel des objets associés aux Idles randoms
+            micro.SetActive(false);
+            phone.SetActive(false);
             animator.Play("Walk");
             deplacer (dest);
             isMoving = true;
@@ -48,7 +58,23 @@ public class Deplacer : MonoBehaviour
             } else
             if(!isTalking){
                 isMoving = false;
-                animator.Play("Idle");
+                if(timerRandomIdle <=0){
+                    RunRandomIdle();
+                    timerRandomIdle = 5.0f;
+                }
+                else{
+                    String currentAnimation = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+                    if(currentAnimation != "Idle_Generic" && currentAnimation != "Walking" && currentAnimation != "Ninja_Run"){
+                        timerRandomIdle = 5.0f;
+                    }
+                    else{
+                        //désactivation du visuel des objets associés aux Idles randoms
+                        micro.SetActive(false);
+                        phone.SetActive(false);
+                        animator.Play("Idle");
+                        timerRandomIdle -= Time.deltaTime;
+                    }
+                }
             } 
             // Si la destination est près de moi et que je ne me déplace pas et que je ne discute pas alors je suis forcément pas occupé (fait car erreur chelou A FIX)
             else if (characterControl.GetCurrentCommandAction().Equals("deplacer")) {
@@ -73,5 +99,24 @@ public class Deplacer : MonoBehaviour
     public bool IsNextToMe(Vector3 to){
         return !((Math.Abs (transform.position.x - to.x) > DELTA_POS) ||
         (Math.Abs (transform.position.z - to.z) > DELTA_POS));
+    }
+
+    /*
+    args : rien
+    do : lance un Ilde aléatoire parmi ceux disponibles
+    return : rien*/
+    private void RunRandomIdle()
+    {
+        String[] randomIdles = {"Boxing","Kicking","Jumping","Dancing","Vomiting","Singing","Calling"};
+        String choice = randomIdles[UnityEngine.Random.Range(0, randomIdles.Length)];
+        animator.Play(choice);
+        //active le micro si l'action est de chanter
+        if(choice == "Singing"){
+            micro.SetActive(true);
+        }
+        //active le téléphone si l'action est de passer un appel
+        if(choice == "Calling"){
+            phone.SetActive(true);
+        }
     }
 }
