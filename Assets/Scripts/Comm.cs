@@ -9,9 +9,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Msg_manager.Manager;
 using static DAO;
+using UnityEngine.SceneManagement;
 
-public class Comm : MonoBehaviour
-{
+
+public class Comm : MonoBehaviour {
     private TcpClient socketConnection;
     private Thread listenThread;
     
@@ -21,10 +22,12 @@ public class Comm : MonoBehaviour
     private string msg_to_recv = "";
     public string action;
     public GameObject[] characters;
-    public GameObject[] regions; 
+    public GameObject[] regions;                     
+    public String[] worlds;
+    public static Comm comm;
 
-    private void Start ()
-    {
+    public DAO dao = new DAO ();
+    private void Start (){
         ConnectAndStartThread();
     }
 
@@ -38,35 +41,24 @@ public class Comm : MonoBehaviour
         if (msg_to_recv.StartsWith ("{")) {
             Msg_manager.Manager.Recv_handler (msg_to_recv);
             msg_to_recv = "";
-        }
+        } 
     }
 
-    private void ConnectToTCPServer ()
-    {
+    void Awake() {
+       
+         
+        DontDestroyOnLoad(this);
+        GameObject controller = GameObject.Find("GameController");
+        DontDestroyOnLoad(controller);
+        //DontDestroyOnLoad(this.gameObject);    
+    }
+    
+    private void ConnectToTCPServer (){
         try
         {
             socketConnection = new TcpClient (host, port);
 
-            DAO dao = new DAO ();
-            dao.type = "info";
-            dao.action = "add_characters";
-            characters = GameObject.FindGameObjectsWithTag("character");
-            dao.characters = new String[characters.Length];
-            for (int i = 0; i < characters.Length; i ++) {
-                dao.characters[i] = characters[i].name;
-            }
-            msg_to_send = dao.Serialize ();
-            SendTCPMessage ();
-
-            dao.action = "add_regions";
-            regions = GameObject.FindGameObjectsWithTag("region");
-            dao.world = new S_World ();
-            dao.world.regions = new String[regions.Length];
-            for (int i = 0; i < regions.Length; i ++) {
-                dao.world.regions[i] = regions[i].name;
-            }
-            msg_to_send = dao.Serialize ();
-            SendTCPMessage ();
+            UpdateInfos();
 
             Debug.Log("Connexion à la socket réussie !");
         }
@@ -76,10 +68,11 @@ public class Comm : MonoBehaviour
         }
     }
 
-    public void SendTCPMessage () {
+    public void SendTCPMessage (){
         try
         {
             if (IsConnected()) {
+               
                 NetworkStream stream = socketConnection.GetStream ();
                 if (stream.CanWrite)
                 {
@@ -108,8 +101,7 @@ public class Comm : MonoBehaviour
         SendTCPMessage ();
     }
 
-    private void ListenForData ()
-    {
+    private void ListenForData (){
         try
         {
             byte[] bytes = new byte[2048];
@@ -142,15 +134,13 @@ public class Comm : MonoBehaviour
     }
 
    // Event appelé quand l'application se ferme
-    private void OnApplicationQuit()
-    {
+    private void OnApplicationQuit(){
         CloseTCPClient ();
     }
 
 
     // Fonction de fermeture de la socket
-    public void CloseTCPClient()
-    {
+    public void CloseTCPClient(){
         // Envoie un message à Python pour indiquer que Unity se ferme seulement si la connexion est toujours en cours
         if(IsConnected()){
             SendCloseMessage();
@@ -160,8 +150,7 @@ public class Comm : MonoBehaviour
     }
 
     // Fonction qui permet de savoir si la socket est toujours connecté ou non (trouvé sur : https://stackoverflow.com/questions/6993295/how-to-determine-if-the-tcp-is-connected-or-not)
-    public bool IsConnected ()
-    {
+    public bool IsConnected (){
         try
         {
             if (socketConnection != null && socketConnection.Client != null && socketConnection.Client.Connected)
@@ -201,4 +190,42 @@ public class Comm : MonoBehaviour
             return false;
         }
     }
+
+   public void UpdateInfos(){
+       
+        dao.type = "info";
+        dao.action = "add_characters";
+        characters = GameObject.FindGameObjectsWithTag("character");
+        dao.characters = new String[characters.Length];
+        for (int i = 0; i < characters.Length; i ++) {
+            dao.characters[i] = characters[i].name;
+        }
+        msg_to_send = dao.Serialize ();
+        SendTCPMessage ();
+
+        dao.action = "add_regions";
+        regions = GameObject.FindGameObjectsWithTag("region");
+        dao.world = new S_World ();
+        dao.world.regions = new String[regions.Length];
+        for (int i = 0; i < regions.Length; i ++) {
+            dao.world.regions[i] = regions[i].name;
+        }
+        msg_to_send = dao.Serialize ();
+        SendTCPMessage ();
+
+        dao.action = "add_worlds";
+        int sceneCount = SceneManager.sceneCountInBuildSettings;     
+        worlds = new string[sceneCount];
+
+        for( int i = 0; i < sceneCount; i++ ){
+            worlds[i] = SceneUtility.GetScenePathByBuildIndex(i);
+            worlds[i]=worlds[i].Remove(0,14);
+             worlds[i]=worlds[i].Remove(worlds[i].Length - 6);
+        }
+        dao.world = new S_World ();
+        dao.world.regions=worlds;
+        msg_to_send = dao.Serialize ();
+        SendTCPMessage ();
+   }
+      
 }

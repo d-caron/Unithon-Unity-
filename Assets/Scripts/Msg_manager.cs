@@ -1,7 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static Comm;
+
+
 
 
 namespace Msg_manager 
@@ -44,6 +46,18 @@ namespace Msg_manager
                     
                     switch (dao.action){
                         
+                        case "load":
+                            string scene = dao.world.id; 
+                           
+                            
+                            SceneManager.LoadScene(scene, LoadSceneMode.Single);
+                            Comm.comm.UpdateInfos();
+                            
+                            
+                            
+                         
+                            break;
+
                         case "exit":
                             Application.Quit ();
                             //UnityEditor.EditorApplication.isPlaying = false;
