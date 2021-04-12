@@ -44,10 +44,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1325239060707356104}
   isTalking: 0
-  timerRandomIdle: 5
+  timerMaxRandomIdle: 5
   phone: {fileID: 1661951855660452239}
   micro: {fileID: 1565287483786438661}
   dest: {x: 0, y: 0, z: 0}
+  isMoving: 0
 --- !u!114 &2262859309265576600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,6 +76,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 255fc31e77e540442a02d2d61375127e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOccupied: 0
+  command:
+    action: 
+    args:
+    - 
+    - 
+    state: 0
+    passive: 0
 --- !u!1001 &47075054679663140
 PrefabInstance:
   m_ObjectHideFlags: 0

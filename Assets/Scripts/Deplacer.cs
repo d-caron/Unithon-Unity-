@@ -7,7 +7,8 @@ public class Deplacer : MonoBehaviour
     private static float DELTA_POS = 1.0F;
     public Animator animator;
     public bool isTalking;
-    public float timerRandomIdle = 5.0f;
+    public float timerMaxRandomIdle = 5f;
+    private float timerRandomIdle;
     public GameObject phone;
     public GameObject micro;
 
@@ -23,6 +24,7 @@ public class Deplacer : MonoBehaviour
     {
         characterControl = gameObject.GetComponent<CharacterControl>();
         dest = transform.position;
+        resetTimer();
         isTalking = false;
         isMoving = false;
         //désactivation du visuel des objets associés aux Idles randoms
@@ -40,7 +42,7 @@ public class Deplacer : MonoBehaviour
             if(!characterControl.GetIsOccupied()){
                 characterControl.IsOccupied();
             }
-            timerRandomIdle = 5.0f;
+            resetTimer();
             //désactivation du visuel des objets associés aux Idles randoms
             micro.SetActive(false);
             phone.SetActive(false);
@@ -60,19 +62,19 @@ public class Deplacer : MonoBehaviour
                 isMoving = false;
                 if(timerRandomIdle <=0){
                     RunRandomIdle();
-                    timerRandomIdle = 5.0f;
+                    resetTimer();
                 }
                 else{
                     String currentAnimation = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
                     if(currentAnimation != "Idle_Generic" && currentAnimation != "Walking" && currentAnimation != "Ninja_Run"){
-                        timerRandomIdle = 5.0f;
+                        resetTimer();
                     }
                     else{
                         //désactivation du visuel des objets associés aux Idles randoms
                         micro.SetActive(false);
                         phone.SetActive(false);
                         animator.Play("Idle");
-                        timerRandomIdle -= Time.deltaTime;
+                        timerRandomIdle-=Time.deltaTime;
                     }
                 }
             } 
@@ -81,6 +83,10 @@ public class Deplacer : MonoBehaviour
                 characterControl.IsNotOccupied(false);
             }
         }
+    }
+
+    public void resetTimer(){
+        timerRandomIdle = timerMaxRandomIdle;
     }
 
     // fonction de déplacement d'une unité de distance vers la destination voulue

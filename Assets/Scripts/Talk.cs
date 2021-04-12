@@ -90,8 +90,8 @@ public class Talk : MonoBehaviour
         partner = null;
 
         partnerSave.GetComponent<Deplacer>().isTalking = false;
-        partnerSave.GetComponent<Deplacer>().timerRandomIdle = 5.0f;
-        GetComponent<Deplacer>().timerRandomIdle = 5.0f;
+        partnerSave.GetComponent<Deplacer>().resetTimer();
+        GetComponent<Deplacer>().resetTimer();
         GetComponent<Deplacer>().isTalking = false;
         
         isTalking = 0;
