@@ -14,7 +14,7 @@
 
 
 ## Présentation du projet
----
+
 **À la base**, le projet est de créer un monde virtuel où des IA (Intelligence Artificielles) innovantes interagissent entre elles et avec leurs environnement.  
 Ici, il n'est pas question de créer le comportement de ces IA, mais de créer un monde riche peuplé de personnages qui seront capables d'obéir à des ordres qui seront, dans le futur, piloté par ces IA innovantes.
 
