@@ -36,7 +36,11 @@ public class CharacterControl : MonoBehaviour
     void Update() {
         // Si on a pas d'action à réaliser alors on active le composant Idle pour faire les différentes animations
         if(GetCurrentCommandAction().Equals("")) {
-            GetComponent<Idle>().enabled = true;
+            if (!GetComponent<Idle>().enabled) {
+                GetComponent<Idle>().enabled= true;
+                GetComponent<Idle>().resetTimer();
+            }
+             
         } else {
             GetComponent<Idle>().enabled = false;
         }

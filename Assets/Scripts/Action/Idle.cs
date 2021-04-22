@@ -6,7 +6,9 @@ using System;
 public class Idle : MonoBehaviour
 {
 
-    public float timerRandomIdle = 5.0f;
+    public float timerMaxRandomIdle = 5f;
+
+    private float timerRandomIdle;
     public GameObject phone;
     public GameObject micro;
     public Animator animator;
@@ -24,12 +26,12 @@ public class Idle : MonoBehaviour
     {
         if(timerRandomIdle <=0){
             RunRandomIdle();
-            timerRandomIdle = 5.0f;
+            resetTimer();
         }
         else{
             String currentAnimation = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
             if(currentAnimation != "Idle_Generic" && currentAnimation != "Walking" && currentAnimation != "Ninja_Run"){
-                timerRandomIdle = 5.0f;
+                resetTimer();
             }
             else{
                 //désactivation du visuel des objets associés aux Idles randoms
@@ -58,5 +60,9 @@ public class Idle : MonoBehaviour
         if(choice == "Calling"){
             phone.SetActive(true);
         }
+    }
+
+    public void resetTimer(){
+        timerRandomIdle = timerMaxRandomIdle;
     }
 }
